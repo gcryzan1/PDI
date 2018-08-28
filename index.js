@@ -106,8 +106,7 @@ function matrixToImage(imageMatrix, imageWidth, imageHeight){
 // função que aplica o filtro negativo na imagem do canvas
 function negativeFilter(){
 
-	// copia a matriz para não modificar a original
-	//var imageMatrix = JSON.parse(JSON.stringify(imageCanvas));
+
 
 	// itera a imagem em forma de matriz(array de arrays) de pixels e aplica o filtro negativo para cada pixel e seta a transparência para 255(sem transparência)
 	for(var linha = 0; linha < imageHeight; linha++){
@@ -126,3 +125,48 @@ function negativeFilter(){
 	ctx.putImageData(negativeImage, 0, 0);
 }
 
+function logFilter(){
+
+	var c = document.getElementById("constante").value;
+
+	// copia a matriz para não modificar a original
+	var imageMatrix = JSON.parse(JSON.stringify(originalImageMatrix));
+
+
+	for (var linha = 0; linha < imageHeight; linha++){
+		for (var coluna = 0; coluna < imageWidth; coluna++){
+			var pixel = imageMatrix[linha][coluna];
+
+			pixel.r = c * Math.log(pixel.r + 1);
+			pixel.g = c * Math.log(pixel.g + 1);
+			pixel.b = c * Math.log(pixel.b + 1);
+			pixel.a = 255;
+		}
+	}
+
+	var logImage = matrixToImage(imageMatrix, imageWidth, imageHeight);
+	ctx.putImageData(logImage, 0, 0);
+}
+
+function powFilter(){
+
+	var c = document.getElementById("constante").value;	
+
+	// copia a matriz para não modificar a original
+	var imageMatrix = JSON.parse(JSON.stringify(originalImageMatrix));
+
+
+	for (var linha = 0; linha < imageHeight; linha++){
+		for (var coluna = 0; coluna < imageWidth; coluna++){
+			var pixel = imageMatrix[linha][coluna];
+
+			pixel.r = c * Math.pow(pixel.r, 0.4);
+			pixel.g = c * Math.pow(pixel.g, 0.4);
+			pixel.b = c * Math.pow(pixel.b, 0.4);
+			pixel.a = 255;
+		}
+	}
+
+	var powImage = matrixToImage(imageMatrix, imageWidth, imageHeight);
+	ctx.putImageData(powImage, 0, 0);
+}
