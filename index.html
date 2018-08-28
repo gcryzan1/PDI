@@ -2,21 +2,37 @@
 <html>
 <head>
 	<meta charset="utf-8">
+	<!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+
+    <!-- Latest compiled and minified JavaScript -->
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+
 	<link rel="stylesheet" type="text/css" href="style.css">
 
 </head>
 <body>
-
-	<canvas id="myCanvas" width="600" height="400"></canvas>
-	<img id="myImage" alt="Bonfire" src="https://i.imgur.com/2mHpuJQ.jpg">
-
-	<input type="file" id="imageFile" value="Selecione arquivo" onchange="showImage(this)"/></br>
-	<input type="button" value="Negativo" onclick="negativeFilter()" />
-	<input type="button" value="Logaritmo" onclick="logFilter()" />
-	<input type="button" value="Potência" onclick="powFilter()" />
-	<input type="number" min="0" max="255" value="30" id="constante">
-
-	<script type="text/javascript" src="classes.js"></script>
-	<script type="text/javascript" src="index.js"></script>
+	<div class="container-fluid">
+		<div class="col-md-10 col-md-offset-1">
+			<div class="row">
+				<center><h2>Trabalho de Processamento de Imagens</h2></center><br><br>
+				<center><div class="col-xs-12">
+				<h3>Original</h3>
+				<img id="myImage" alt="Bonfire" src="https://i.imgur.com/2mHpuJQ.jpg"><br><br>
+				<h3>Resultado do filtro</h3>
+				<canvas id="myCanvas" width="600" height=400"></canvas><br><br>
+				</div></center>
+				<center><input type="file" id="imageFile" value="Selecione arquivo" onchange="showImage(this)"/></br></center>
+				<div class="col-lg-12">
+					<div class="col-lg-3"><input class="button" type="button" value="Negativo" onclick="negativeFilter()" /></div>
+					<div class="col-lg-3"><input class="button" type="button" value="Logaritmo" onclick="logFilter()" /></div>
+					<div class="col-lg-3"><input class="button" type="button" value="Potência" onclick="powFilter()" /></div>
+					<div class="col-lg-3"><input class="input" type="number" min="0" max="255" value="30" id="constante"></div>
+				</div>
+				<script type="text/javascript" src="classes.js"></script>
+				<script type="text/javascript" src="index.js"></script>
+			</div>
+		</div>
+	</div>		
 </body>
 </html>
