@@ -226,7 +226,13 @@ function powFilter(){
 	ctx.putImageData(powImage, 0, 0);
 }
 
-function linear(inicio1, fim1, inicio2, fim2){
+function linear(){
+
+	var inicio1 = parseInt(document.getElementById("inicio1").value, 10);
+	var fim1 = parseInt(document.getElementById("fim1").value, 10);
+	var inicio2 = parseInt(document.getElementById("inicio2").value, 10);
+	var fim2 = parseInt(document.getElementById("fim2").value, 10);
+	
 
 	var ponto1 = [inicio1, fim1];
 	var ponto2 = [inicio2, fim2];
