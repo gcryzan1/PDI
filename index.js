@@ -102,6 +102,48 @@ function matrixToImage(imageMatrix, imageWidth, imageHeight){
 }
 
 
+function numberToBinary(number){
+
+	binary = number.toString(2);
+	if (binary.length < 8){
+		while (binary.length != 8){
+			binary = '0' + binary;
+		}
+	}
+
+	return binary;
+}
+
+function binaryToNumber(binary){
+
+	number = parseInt(binary, 2).toString(10);
+
+	return number;
+
+}
+
+function sliceBit(value, bit){
+
+	
+	var arrayBit = numberToBinary(value).split('');
+
+	//var bitPosition = bit - arrayBit.length;
+
+	bitValue = arrayBit[bit];
+
+	if (bitValue == 0){
+		arrayBit[bit] = '1';
+		var binaryValue = arrayBit.join('');
+		return binaryToNumber(binaryValue);
+	} else {
+		arrayBit[bit] = '0';
+		var binaryValue = arrayBit.join('');
+		return binaryToNumber(binaryValue);
+	}
+
+
+}
+
 
 // função que aplica o filtro negativo na imagem do canvas
 function negativeFilter(){
@@ -144,6 +186,7 @@ function logFilter(){
 		}
 	}
 
+
 	var logImage = matrixToImage(imageMatrix, imageWidth, imageHeight);
 	ctx.putImageData(logImage, 0, 0);
 }
@@ -170,3 +213,75 @@ function powFilter(){
 	var powImage = matrixToImage(imageMatrix, imageWidth, imageHeight);
 	ctx.putImageData(powImage, 0, 0);
 }
+
+function sliceByValue(){
+
+	var value = document.getElementById("value").value;
+
+	var imageMatrix = JSON.parse(JSON.stringify(originalImageMatrix));
+
+	for (var linha = 0; linha < imageHeight; linha++){
+		for (var coluna = 0; coluna < imageWidth; coluna++){
+			var pixel = imageMatrix[linha][coluna];
+
+			if (pixel.r < value){
+				pixel.r = 0;
+			}
+			if (pixel.g < value){
+				pixel.g = 0;
+			}
+			if (pixel.b < value){
+				pixel.b = 0;
+			}
+			pixel.a = 255;
+
+		}
+	}
+
+	var valueImage = matrixToImage(imageMatrix, imageWidth, imageHeight);
+	ctx.putImageData(valueImage, 0, 0);
+
+
+}
+
+
+
+function sliceByBit(){
+
+	var bit = document.getElementById("bit").value;
+
+	var imageMatrix = JSON.parse(JSON.stringify(originalImageMatrix));
+
+
+	for (var linha = 0; linha < imageHeight; linha++){
+		for (var coluna = 0; coluna < imageWidth; coluna++){
+			var pixel = imageMatrix[linha][coluna];
+
+			pixel.r = sliceBit(pixel.r, bit);
+			pixel.g = sliceBit(pixel.g, bit);
+			pixel.b = sliceBit(pixel.b, bit);
+			pixel.a = 255;
+
+		}
+	}
+
+	var bitImage = matrixToImage(imageMatrix, imageWidth, imageHeight);
+	ctx.putImageData(bitImage, 0, 0);
+
+}
+
+
+
+
+/*
+		var arrayAux = [];
+
+		for (var i = 0; i < arrayBit.length; i++){
+			arrayAux.push('0');
+		}
+		
+		arrayAux[bitValue] = '1';
+
+		var binaryValue = arrayAux.join('');
+		return binaryToNumber(binaryValue);
+*/
