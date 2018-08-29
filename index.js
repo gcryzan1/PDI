@@ -129,19 +129,31 @@ function sliceBit(value, bit){
 
 	//var bitPosition = bit - arrayBit.length;
 
-	bitValue = arrayBit[bit];
+	bitValue = arrayBit[8 - bit];
 
 	if (bitValue == 0){
-		arrayBit[bit] = '1';
-		var binaryValue = arrayBit.join('');
-		return binaryToNumber(binaryValue);
+		return 0;
 	} else {
-		arrayBit[bit] = '0';
-		var binaryValue = arrayBit.join('');
+		var arrayAux = ['0', '0', '0', '0', '0', '0', '0', '0'];
+
+		//for (var i = 0; i < arrayBit.length; i++){
+		//	arrayAux.push('0');
+		//}
+		
+		arrayAux[8 - bit] = '1';
+
+		var binaryValue = arrayAux.join('');
 		return binaryToNumber(binaryValue);
 	}
 
+}
 
+function eqReta(inicio, fim, value){
+	var m = (fim[1] - inicio[1]) / (fim[0] - inicio[0]);
+
+	var y = m * (value - inicio[0]) + fim[0];
+
+	return y;
 }
 
 
@@ -213,6 +225,59 @@ function powFilter(){
 	var powImage = matrixToImage(imageMatrix, imageWidth, imageHeight);
 	ctx.putImageData(powImage, 0, 0);
 }
+
+function linear(inicio1, fim1, inicio2, fim2){
+
+	var ponto1 = [inicio1, fim1];
+	var ponto2 = [inicio2, fim2];
+	const inicial = [0, 0];
+	const final = [255, 255];
+
+
+	var imageMatrix = JSON.parse(JSON.stringify(originalImageMatrix));
+
+	for (var linha = 0; linha < imageHeight; linha++){
+		for (var coluna = 0; coluna < imageWidth; coluna++){
+			var pixel = imageMatrix[linha][coluna];
+
+			if (pixel.r <= inicio1){
+				pixel.r = eqReta(inicial, ponto1, pixel.r);
+			} else if (pixel.r > inicio1 && pixel.r <= inicio2){
+				pixel.r = eqReta(ponto1, ponto2, pixel.r);
+			} else if (pixel.r > inicio2 && pixel.r <= 255){
+				pixel.r = eqReta(ponto2, final, pixel.r);
+			}
+
+			if (pixel.g <= inicio1){
+				pixel.g = eqReta(inicial, ponto1, pixel.g);
+			} else if (pixel.g > inicio1 && pixel.g <= inicio2){
+				pixel.g = eqReta(ponto1, ponto2, pixel.g);
+			} else if (pixel.g > inicio2 && pixel.g <= 255){
+				pixel.g = eqReta(ponto2, final, pixel.g);
+			}
+
+			if (pixel.b <= inicio1){
+				pixel.b = eqReta(inicial, ponto1, pixel.b);
+			} else if (pixel.b > inicio1 && pixel.b <= inicio2){
+				pixel.b = eqReta(ponto1, ponto2, pixel.b);
+			} else if (pixel.b > inicio2 && pixel.b <= 255){
+				pixel.b = eqReta(ponto2, final, pixel.b);
+			}
+
+
+			pixel.a = 255;
+
+		}
+	}
+
+	var linearImage = matrixToImage(imageMatrix, imageWidth, imageHeight);
+	ctx.putImageData(linearImage, 0, 0);
+
+
+}
+
+
+
 
 function sliceByValue(){
 

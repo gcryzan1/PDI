@@ -28,10 +28,14 @@
 					<div class="col-lg-1"><input class="button" type="button" value="Logaritmo" onclick="logFilter()" /></div>
 					<div class="col-lg-1"><input class="button" type="button" value="Potência" onclick="powFilter()" /></div>
 					<div class="col-lg-1"><input class="input" type="number" min="0" max="255" value="30" id="constante"></div>
+
 					<div class="col-lg-1"><input class="button" type="button" value="binario" onclick="sliceByBit()" /></div>
 					<div class="col-lg-1"><input class="input" type="number" min="1" max="8" value="0" id="bit"></div>
+
 					<div class="col-lg-1"><input class="button" type="button" value="limiar" onclick="sliceByValue()" /></div>
 					<div class="col-lg-1"><input class="input" type="number" min="0" max="255" value="0" id="value"></div>
+
+					<div class="col-lg-1"><input class="button" type="button" value="linear" onclick="linear(100, 20, 200, 230)"></div>
 				</div>
 				<script type="text/javascript" src="classes.js"></script>
 				<script type="text/javascript" src="index.js"></script>
