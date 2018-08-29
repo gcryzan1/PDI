@@ -19,6 +19,7 @@ body{
 */
 .input{
     margin-top:20px;
+    margin-left: 20px;
     width:60px;
     height:30px;    
     border-radius:8px;
