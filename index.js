@@ -254,6 +254,7 @@ function powFilter(){
 	var x = [];
 
 	var c = document.getElementById("constante").value;	
+	var gamma = document.getElementById("gamma").value;
 
 	// copia a matriz para não modificar a original
 	var imageMatrix = JSON.parse(JSON.stringify(originalImageMatrix));
@@ -263,9 +264,9 @@ function powFilter(){
 		for (var coluna = 0; coluna < imageWidth; coluna++){
 			var pixel = imageMatrix[linha][coluna];
 
-			pixel.r = c * Math.pow(pixel.r, 0.4);
-			pixel.g = c * Math.pow(pixel.g, 0.4);
-			pixel.b = c * Math.pow(pixel.b, 0.4);
+			pixel.r = c * Math.pow(pixel.r, gamma);
+			pixel.g = c * Math.pow(pixel.g, gamma);
+			pixel.b = c * Math.pow(pixel.b, gamma);
 			pixel.a = 255;
 
 			if (pixel.r > 255){

@@ -11,11 +11,14 @@ body{
 	background-color: #F5DEB3;
 }
 
-/*.hr{
+.hr{
     color:black;
-    background-color: black;
-    height: 2px;
+    background-color: #008CBA;
+    height: 4px;
+    width: 100%;
+    /*border: 1px solid;*/
 }
+/*
 margin-top:20px;
 */
 .input{

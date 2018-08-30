@@ -23,17 +23,21 @@
 				<img id="myImage" alt="Bonfire" src="https://i.imgur.com/2mHpuJQ.jpg"><br><br>
 				<h3>Resultado do filtro</h3>
 				<canvas id="myCanvas" width="600" height="400"></canvas><br><br>
-				</div></center>
 				<center><input type="file" id="imageFile" value="Selecione arquivo" onchange="showImage(this)"/></br></center>
+				<h3>Histograma</h3>
+				<div id="histograma"></div><br><br><br>
+				</div></center>
 				<div class="col-lg-12">
 					<div class="col-lg-2"><input class="button" type="button" value="Negativo" onclick="negativeFilter()" /></div>
+					<div class="col-lg-2"><input class="button" type="button" value="Equalizar imagem" onclick="equalizedHistogram()" /></div>
+					<div class="col-lg-1"></div>
 					<div class="col-lg-2"><input class="button" type="button" value="Logaritmo" onclick="logFilter()" /></div>
-					<div class="col-lg-2"><input class="button" type="button" value="Potência" onclick="powFilter()" /></div>
 					<div class="col-lg-2"><input class="input" type="number" min="0" max="255" value="30" id="constante"></div>
 
 					<div class="col-lg-2"><input class="button" type="button" value="Binário" onclick="sliceByBit()" /></div>
-					<div class="col-lg-2"><input class="input" type="number" min="1" max="8" value="0" id="bit"></div>
+					<div class="col-lg-1"><input class="input" type="number" min="1" max="8" value="0" id="bit"></div>
 				</div>
+				<hr class="hr">
 				<div class="col-lg-12">					
 					<div class="col-lg-2"><input class="button" type="button" value="Limiarização" onclick="sliceByValue()" /></div>
 					<div class="col-lg-2"><input class="input" type="number" min="0" max="255" value="0" id="value"></div>
@@ -43,12 +47,13 @@
 					<div class="col-lg-4"><input class="input" type="number" min="0" max="255" value="0" id="fim1"></div>
 					<div class="col-lg-2"><input class="input" type="number" min="0" max="255" value="0" id="inicio2"></div>
 					<div class="col-lg-2"><input class="input" type="number" min="0" max="255" value="0" id="fim2"></div>
-					<div class="col-lg-2"><input class="button" type="button" value="Equalizar imagem" onclick="equalizedHistogram()" /></div>					
 				</div><br />
-
-				<br><br><br><br><br><br><br><br><br><br><br><br><br>
-
-				<div id="histograma"></div>
+				<hr class="hr">
+				<div class="col-lg-12">
+					<div class="col-lg-2"><input class="button" type="button" value="Potência" onclick="powFilter()" /></div>
+					<div class="col-lg-2"><input class="input" type="float" value="0.4" min="0.4" max="25.0" id="gamma"></div>
+					<div class="col-lg-2"><input class="input" type="number" min="0" max="255" value="30" id="constante"></div>
+				</div>
 				
 				<script type="text/javascript" src="classes.js"></script>
 				<script type="text/javascript" src="index.js"></script>
