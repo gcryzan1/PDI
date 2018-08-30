@@ -44,6 +44,24 @@ function showImageOnCanvas(image){
 	originalImageMatrix = imageToMatrix(imageData, imageWidth, imageHeight);
 	imageCanvas = imageToMatrix(imageData, imageWidth, imageHeight);
 
+	// criada uma variável x que servirá para mostrar o histograma da imagem carregada
+	var x = [];
+
+	for(var linha = 0; linha < imageHeight; linha++){
+		for (var coluna = 0; coluna < imageWidth; coluna++){
+			var pixel = imageCanvas[linha][coluna];
+
+			x.push(pixel.r);
+		}
+	}
+
+	var trace = {
+		x: x,
+		type: 'histogram',
+	};
+	var data = [trace];
+	Plotly.newPlot('histograma', data);
+
 }
 
 
@@ -124,10 +142,7 @@ function binaryToNumber(binary){
 
 function sliceBit(value, bit){
 
-	
 	var arrayBit = numberToBinary(value).split('');
-
-	//var bitPosition = bit - arrayBit.length;
 
 	bitValue = arrayBit[8 - bit];
 
@@ -135,10 +150,6 @@ function sliceBit(value, bit){
 		return 0;
 	} else {
 		var arrayAux = ['0', '0', '0', '0', '0', '0', '0', '0'];
-
-		//for (var i = 0; i < arrayBit.length; i++){
-		//	arrayAux.push('0');
-		//}
 		
 		arrayAux[8 - bit] = '1';
 
@@ -156,10 +167,24 @@ function eqReta(inicio, fim, value){
 	return y;
 }
 
+function countArray(array){
+	var a = new Array(256);
+	a.fill(0);
+
+
+	for (var i = 0; i < array.length; i++){
+		a[array[i]]++;
+	}
+
+	return a;
+}
+
+
 
 // função que aplica o filtro negativo na imagem do canvas
 function negativeFilter(){
 
+	var x = [];
 
 
 	// itera a imagem em forma de matriz(array de arrays) de pixels e aplica o filtro negativo para cada pixel e seta a transparência para 255(sem transparência)
@@ -171,15 +196,26 @@ function negativeFilter(){
 			pixel.g = 255 - pixel.g;
 			pixel.b = 255 - pixel.b;
 			pixel.a = 255;
+
+			x.push(pixel.r);
 		}
 	}
 
 	// faz a transformação que transforma a matriz de pixels de volta no formato de dados que era antes e depois coloca a imagem no canvas
 	var negativeImage = matrixToImage(imageCanvas, imageWidth, imageHeight);
 	ctx.putImageData(negativeImage, 0, 0);
+
+	var trace = {
+		x: x,
+		type: 'histogram',
+	};
+	var data = [trace];
+	Plotly.newPlot('histograma', data);
 }
 
 function logFilter(){
+
+	var x = [];
 
 	var c = document.getElementById("constante").value;
 
@@ -195,15 +231,27 @@ function logFilter(){
 			pixel.g = c * Math.log(pixel.g + 1);
 			pixel.b = c * Math.log(pixel.b + 1);
 			pixel.a = 255;
+
+			var aux = parseInt(pixel.r.toFixed(), 10);
+			x.push(aux);
 		}
 	}
 
 
 	var logImage = matrixToImage(imageMatrix, imageWidth, imageHeight);
 	ctx.putImageData(logImage, 0, 0);
+
+	var trace = {
+		x: x,
+		type: 'histogram',
+	};
+	var data = [trace];
+	Plotly.newPlot('histograma', data);
 }
 
 function powFilter(){
+
+	var x = [];
 
 	var c = document.getElementById("constante").value;	
 
@@ -219,14 +267,30 @@ function powFilter(){
 			pixel.g = c * Math.pow(pixel.g, 0.4);
 			pixel.b = c * Math.pow(pixel.b, 0.4);
 			pixel.a = 255;
+
+			if (pixel.r > 255){
+				x.push(255);
+			} else {
+				var aux = parseInt(pixel.r.toFixed());
+				x.push(aux);
+			}
 		}
 	}
 
 	var powImage = matrixToImage(imageMatrix, imageWidth, imageHeight);
 	ctx.putImageData(powImage, 0, 0);
+
+	var trace = {
+		x: x,
+		type: 'histogram',
+	};
+	var data = [trace];
+	Plotly.newPlot('histograma', data);
 }
 
 function linear(){
+
+	var x = [];
 
 	var inicio1 = parseInt(document.getElementById("inicio1").value, 10);
 	var fim1 = parseInt(document.getElementById("fim1").value, 10);
@@ -270,8 +334,10 @@ function linear(){
 				pixel.b = eqReta(ponto2, final, pixel.b);
 			}
 
-
 			pixel.a = 255;
+
+			var aux = parseInt(pixel.r.toFixed());
+			x.push(aux);
 
 		}
 	}
@@ -279,13 +345,17 @@ function linear(){
 	var linearImage = matrixToImage(imageMatrix, imageWidth, imageHeight);
 	ctx.putImageData(linearImage, 0, 0);
 
-
+	var trace = {
+		x: x,
+		type: 'histogram',
+	};
+	var data = [trace];
+	Plotly.newPlot('histograma', data);
 }
 
-
-
-
 function sliceByValue(){
+
+	var x = [];
 
 	var value = document.getElementById("value").value;
 
@@ -306,18 +376,27 @@ function sliceByValue(){
 			}
 			pixel.a = 255;
 
+			x.push(pixel.r);
+
 		}
 	}
 
 	var valueImage = matrixToImage(imageMatrix, imageWidth, imageHeight);
 	ctx.putImageData(valueImage, 0, 0);
 
-
+	var trace = {
+		x: x,
+		type: 'histogram',
+	};
+	var data = [trace];
+	Plotly.newPlot('histograma', data);
 }
 
 
 
 function sliceByBit(){
+
+	var x = [];
 
 	var bit = document.getElementById("bit").value;
 
@@ -333,26 +412,65 @@ function sliceByBit(){
 			pixel.b = sliceBit(pixel.b, bit);
 			pixel.a = 255;
 
+			x.push(pixel.r);
+
 		}
 	}
 
 	var bitImage = matrixToImage(imageMatrix, imageWidth, imageHeight);
 	ctx.putImageData(bitImage, 0, 0);
 
+	var trace = {
+		x: x,
+		type: 'histogram',
+	};
+	var data = [trace];
+	Plotly.newPlot('histograma', data);
 }
 
+function equalizedHistogram(){
 
+	var red = [];
+	var equalizedRed = [];
 
+	var imageMatrix = JSON.parse(JSON.stringify(originalImageMatrix));
 
-/*
-		var arrayAux = [];
+	for(var linha = 0; linha < imageHeight; linha++){
+		for (var coluna = 0; coluna < imageWidth; coluna++){
+			var pixel = imageMatrix[linha][coluna];
 
-		for (var i = 0; i < arrayBit.length; i++){
-			arrayAux.push('0');
+			red.push(pixel.r);
 		}
-		
-		arrayAux[bitValue] = '1';
+	}
 
-		var binaryValue = arrayAux.join('');
-		return binaryToNumber(binaryValue);
-*/
+	var colorCount = countArray(red);
+	var sk = (255/240000);
+
+
+	for(var linha = 0; linha < imageHeight; linha++){
+		for (var coluna = 0; coluna < imageWidth; coluna++){
+			var pixel = imageMatrix[linha][coluna];
+			var sum = 0;
+
+			for (var j = 0; j <= pixel.r; j++){
+				sum += colorCount[j];
+			}
+
+			pixel.r = Math.round(sk * sum);
+			pixel.g = Math.round(sk * sum);
+			pixel.b = Math.round(sk * sum);
+			pixel.a = 255;
+			equalizedRed.push(pixel.r);
+		}
+	}
+
+	var trace = {
+		x: equalizedRed,
+		type: 'histogram',
+	};
+	var data = [trace];
+	Plotly.newPlot('histograma', data);
+
+	var equalizedImage = matrixToImage(imageMatrix, imageWidth, imageHeight);
+	ctx.putImageData(equalizedImage, 0, 0);
+}
