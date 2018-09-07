@@ -53,6 +53,12 @@
 					<div class="col-lg-2"><input class="button" type="button" value="Potência" onclick="powFilter()" /></div>
 					<div class="col-lg-2"><input class="input" type="float" value="0.4" min="0.4" max="25.0" id="gamma"></div>
 					<div class="col-lg-2"><input class="input" type="number" min="0" max="255" value="30" id="constante"></div>
+
+					<div class="col-lg-2"><input class="button" type="button" value="Convolução" onclick="convolution()" /></div>
+
+					<div class="col-lg-2"><input class="button" type="button" value="Média" onclick="convolutionAverage()" /></div>
+
+					<div class="col-lg-2"><input class="button" type="button" value="Média Ponderada" onclick="convolutionWeighted()" /></div>
 				</div>
 				
 				<script type="text/javascript" src="classes.js"></script>

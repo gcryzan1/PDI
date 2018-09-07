@@ -164,6 +164,10 @@ function eqReta(inicio, fim, value){
 
 	var y = m * (value - inicio[0]) + fim[0];
 
+	if (y > 255){
+		y = 255;
+	}
+
 	return y;
 }
 
@@ -368,12 +372,18 @@ function sliceByValue(){
 
 			if (pixel.r < value){
 				pixel.r = 0;
+			} else {
+				pixel.r = 255;
 			}
 			if (pixel.g < value){
 				pixel.g = 0;
+			} else {
+				pixel.g = 255;
 			}
 			if (pixel.b < value){
 				pixel.b = 0;
+			} else {
+				pixel.b = 255;
 			}
 			pixel.a = 255;
 
@@ -474,4 +484,241 @@ function equalizedHistogram(){
 
 	var equalizedImage = matrixToImage(imageMatrix, imageWidth, imageHeight);
 	ctx.putImageData(equalizedImage, 0, 0);
+}
+
+function convolution(){
+
+	var x = [];
+
+	var imageMatrix = JSON.parse(JSON.stringify(originalImageMatrix));
+
+	var convolutionMatrix = [];
+	convolutionMatrix.push([0, 0, 0, 0, 0]);
+	convolutionMatrix.push([0, -2, -1, 0, 0]);
+	convolutionMatrix.push([0, -1, 1, 1, 0]);
+	convolutionMatrix.push([0, 0, 1, 2, 0]);
+	convolutionMatrix.push([0, 0, 0, 0, 0]);
+
+	for (var linha = 0; linha < imageHeight; linha++){
+		for (var coluna = 0; coluna < imageWidth; coluna++){
+			var sumR = 0;
+			var sumG = 0;
+			var sumB = 0;
+
+			for (var linhaC = 0; linhaC < 5; linhaC++){
+				for (var colunaC = 0; colunaC < 5; colunaC++){
+					var indexLinha = linha - 2 + linhaC;
+					var indexColuna = coluna - 2 + colunaC;
+
+					if (indexLinha >= 0 && indexLinha < imageHeight && indexColuna >= 0 && indexColuna < imageWidth){
+						var pixel = originalImageMatrix[indexLinha][indexColuna];
+
+						sumR += convolutionMatrix[linhaC][colunaC] * pixel.r;
+						sumG += convolutionMatrix[linhaC][colunaC] * pixel.g;
+						sumB += convolutionMatrix[linhaC][colunaC] * pixel.b;
+					}
+				}
+			}
+
+			var pixel = imageMatrix[linha][coluna];
+
+			pixel.r = sumR;
+			pixel.g = sumG;
+			pixel.b = sumB;
+
+			if (pixel.r < 0){
+				pixel.r = 0;
+			} else if (pixel.r > 255){
+				pixel.r = 255;
+			}
+			if (pixel.g < 0){
+				pixel.g = 0;
+			} else if (pixel.g > 255){
+				pixel.g = 255;
+			}
+			if (pixel.b < 0){
+				pixel.b = 0;
+			} else if (pixel.b > 255){
+				pixel.b = 255;
+			}
+
+
+
+			x.push(pixel.r);
+		}
+	}
+
+	var trace = {
+		x: x,
+		type: 'histogram',
+	};
+	var data = [trace];
+	Plotly.newPlot('histograma', data);
+
+	var convolutedImage = matrixToImage(imageMatrix, imageWidth, imageHeight);
+	ctx.putImageData(convolutedImage, 0, 0);
+
+}
+
+function convolutionAverage(){
+
+	var x = [];
+
+	var imageMatrix = JSON.parse(JSON.stringify(originalImageMatrix));
+
+	var convolutionMatrix = [];
+	convolutionMatrix.push([0, 0, 0, 0, 0]);
+	convolutionMatrix.push([0, 1, 1, 1, 0]);
+	convolutionMatrix.push([0, 1, 1, 1, 0]);
+	convolutionMatrix.push([0, 1, 1, 1, 0]);
+	convolutionMatrix.push([0, 0, 0, 0, 0]);
+
+	var div = 1;
+
+	if (convolutionMatrix[0][0] == 0 && convolutionMatrix[0][1] == 0 && convolutionMatrix[0][2] == 0 && convolutionMatrix[0][3] == 0 && convolutionMatrix[0][4] == 0 
+		&& convolutionMatrix[1][0] == 0 && convolutionMatrix[1][4] == 0 && convolutionMatrix[2][0] == 0 && convolutionMatrix[2][4] == 0 && convolutionMatrix[3][0] == 0 
+		&& convolutionMatrix[3][4] == 0 && convolutionMatrix[4][0] == 0 && convolutionMatrix[4][1] == 0 && convolutionMatrix[4][2] == 0 && convolutionMatrix[4][3] == 0 && convolutionMatrix[4][4] == 0){
+		div = 9;
+	} else {
+		div = 25;
+	}
+
+	for (var linha = 0; linha < imageHeight; linha++){
+		for (var coluna = 0; coluna < imageWidth; coluna++){
+			var sumR = 0;
+			var sumG = 0;
+			var sumB = 0;
+
+			for (var linhaC = 0; linhaC < 5; linhaC++){
+				for (var colunaC = 0; colunaC < 5; colunaC++){
+					var indexLinha = linha - 2 + linhaC;
+					var indexColuna = coluna - 2 + colunaC;
+
+					if (indexLinha >= 0 && indexLinha < imageHeight && indexColuna >= 0 && indexColuna < imageWidth){
+						var pixel = originalImageMatrix[indexLinha][indexColuna];
+
+						sumR += convolutionMatrix[linhaC][colunaC] * pixel.r;
+						sumG += convolutionMatrix[linhaC][colunaC] * pixel.g;
+						sumB += convolutionMatrix[linhaC][colunaC] * pixel.b;
+					}
+				}
+			}
+
+			var pixel = imageMatrix[linha][coluna];
+
+			pixel.r = sumR / div;
+			pixel.g = sumG / div;
+			pixel.b = sumB / div;
+
+			if (pixel.r < 0){
+				pixel.r = 0;
+			} else if (pixel.r > 255){
+				pixel.r = 255;
+			}
+			if (pixel.g < 0){
+				pixel.g = 0;
+			} else if (pixel.g > 255){
+				pixel.g = 255;
+			}
+			if (pixel.b < 0){
+				pixel.b = 0;
+			} else if (pixel.b > 255){
+				pixel.b = 255;
+			}
+
+
+
+			x.push(pixel.r);
+		}
+	}
+
+	var trace = {
+		x: x,
+		type: 'histogram',
+	};
+	var data = [trace];
+	Plotly.newPlot('histograma', data);
+
+	var convolutedImage = matrixToImage(imageMatrix, imageWidth, imageHeight);
+	ctx.putImageData(convolutedImage, 0, 0);
+
+}
+
+function convolutionWeighted(){
+
+	var x = [];
+
+	var imageMatrix = JSON.parse(JSON.stringify(originalImageMatrix));
+
+	var convolutionMatrix = [];
+	convolutionMatrix.push([0, 0, 0, 0, 0]);
+	convolutionMatrix.push([0, 1, 1, 1, 0]);
+	convolutionMatrix.push([0, 1, 1, 1, 0]);
+	convolutionMatrix.push([0, 1, 1, 1, 0]);
+	convolutionMatrix.push([0, 0, 0, 0, 0]);
+
+
+	for (var linha = 0; linha < imageHeight; linha++){
+		for (var coluna = 0; coluna < imageWidth; coluna++){
+			var sumR = 0;
+			var sumG = 0;
+			var sumB = 0;
+
+			var sum = 0;
+
+			for (var linhaC = 0; linhaC < 5; linhaC++){
+				for (var colunaC = 0; colunaC < 5; colunaC++){
+					var indexLinha = linha - 2 + linhaC;
+					var indexColuna = coluna - 2 + colunaC;
+
+					if (indexLinha >= 0 && indexLinha < imageHeight && indexColuna >= 0 && indexColuna < imageWidth){
+						var pixel = originalImageMatrix[indexLinha][indexColuna];
+
+						sumR += convolutionMatrix[linhaC][colunaC] * pixel.r;
+						sumG += convolutionMatrix[linhaC][colunaC] * pixel.g;
+						sumB += convolutionMatrix[linhaC][colunaC] * pixel.b;
+
+					}
+					sum += convolutionMatrix[linhaC][colunaC];
+				}
+			}
+
+			var pixel = imageMatrix[linha][coluna];
+
+			pixel.r = sumR / sum;
+			pixel.g = sumG / sum;
+			pixel.b = sumB / sum;
+
+			if (pixel.r < 0){
+				pixel.r = 0;
+			} else if (pixel.r > 255){
+				pixel.r = 255;
+			}
+			if (pixel.g < 0){
+				pixel.g = 0;
+			} else if (pixel.g > 255){
+				pixel.g = 255;
+			}
+			if (pixel.b < 0){
+				pixel.b = 0;
+			} else if (pixel.b > 255){
+				pixel.b = 255;
+			}
+
+
+
+			x.push(pixel.r);
+		}
+	}
+
+	var trace = {
+		x: x,
+		type: 'histogram',
+	};
+	var data = [trace];
+	Plotly.newPlot('histograma', data);
+
+	var convolutedImage = matrixToImage(imageMatrix, imageWidth, imageHeight);
+	ctx.putImageData(convolutedImage, 0, 0);
+
 }
