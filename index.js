@@ -184,7 +184,6 @@ function countArray(array){
 }
 
 
-
 // função que aplica o filtro negativo na imagem do canvas
 function negativeFilter(){
 
@@ -494,9 +493,9 @@ function convolution(){
 
 	var convolutionMatrix = [];
 	convolutionMatrix.push([0, 0, 0, 0, 0]);
-	convolutionMatrix.push([0, -2, -1, 0, 0]);
-	convolutionMatrix.push([0, -1, 1, 1, 0]);
-	convolutionMatrix.push([0, 0, 1, 2, 0]);
+	convolutionMatrix.push([0, -1, -2, 1, 0]);
+	convolutionMatrix.push([0, -2, 0, 2, 0]);
+	convolutionMatrix.push([0, -1, 2, 1, 0]);
 	convolutionMatrix.push([0, 0, 0, 0, 0]);
 
 	for (var linha = 0; linha < imageHeight; linha++){
@@ -652,9 +651,9 @@ function convolutionWeighted(){
 
 	var convolutionMatrix = [];
 	convolutionMatrix.push([0, 0, 0, 0, 0]);
-	convolutionMatrix.push([0, 1, 1, 1, 0]);
-	convolutionMatrix.push([0, 1, 1, 1, 0]);
-	convolutionMatrix.push([0, 1, 1, 1, 0]);
+	convolutionMatrix.push([0, 0, 1, 0, 0]);
+	convolutionMatrix.push([0, 1, -4, 1, 0]);
+	convolutionMatrix.push([0, 0, 1, 0, 0]);
 	convolutionMatrix.push([0, 0, 0, 0, 0]);
 
 
@@ -684,6 +683,10 @@ function convolutionWeighted(){
 			}
 
 			var pixel = imageMatrix[linha][coluna];
+
+			if (sum == 0){
+				sum = 1;
+			}
 
 			pixel.r = sumR / sum;
 			pixel.g = sumG / sum;
@@ -720,5 +723,69 @@ function convolutionWeighted(){
 
 	var convolutedImage = matrixToImage(imageMatrix, imageWidth, imageHeight);
 	ctx.putImageData(convolutedImage, 0, 0);
+
+}
+
+function mediana(){
+
+	var x = [];
+
+	var imageMatrix = JSON.parse(JSON.stringify(originalImageMatrix));
+
+	var size = document.getElementById("tamanho").value;
+
+	if (size % 2 == 0){
+		size += 1;
+	}
+
+	var dist = (size - 1) / 2;
+
+	for (var linha = 0; linha < imageHeight; linha++){
+		for (var coluna = 0; coluna < imageWidth; coluna++){
+			
+			var listaMedianaR = [];
+			var listaMedianaG = [];
+			var listaMedianaB = [];
+
+			for (var i = 0; i < size; i++){
+				for (var j = 0; j < size; j++){
+					
+					var indexLinha = linha - dist + i;
+					var indexColuna = coluna - dist + j;
+
+					if (indexLinha >= 0 && indexLinha < imageHeight && indexColuna >= 0 && indexColuna < imageWidth){
+						var pixel = originalImageMatrix[indexLinha][indexColuna];
+
+						listaMedianaR.push(pixel.r);
+						listaMedianaG.push(pixel.g);
+						listaMedianaB.push(pixel.b);
+
+					}
+				}
+			}
+
+			listaMedianaR.sort(function(a, b){return a - b});
+			listaMedianaG.sort(function(a, b){return a - b});
+			listaMedianaB.sort(function(a, b){return a - b});
+
+			var mid = (listaMedianaR.length + 1) / 2;
+			var pixel = imageMatrix[linha][coluna];
+			pixel.r = listaMedianaR[mid];
+			pixel.g = listaMedianaG[mid];
+			pixel.b = listaMedianaB[mid];
+
+			x.push(pixel.r);
+		}
+	}
+
+	var trace = {
+		x: x,
+		type: 'histogram',
+	};
+	var data = [trace];
+	Plotly.newPlot('histograma', data);
+
+	var medianaImage = matrixToImage(imageMatrix, imageWidth, imageHeight);
+	ctx.putImageData(medianaImage, 0, 0);
 
 }
