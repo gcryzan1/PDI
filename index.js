@@ -491,12 +491,44 @@ function convolution(){
 
 	var imageMatrix = JSON.parse(JSON.stringify(originalImageMatrix));
 
+	var valor1 = parseInt(document.getElementById("valor1").value);
+	var valor2 = parseInt(document.getElementById("valor2").value);
+	var valor3 = parseInt(document.getElementById("valor3").value);
+	var valor4 = parseInt(document.getElementById("valor4").value);
+	var valor5 = parseInt(document.getElementById("valor5").value);
+	var valor6 = parseInt(document.getElementById("valor6").value);
+	var valor7 = parseInt(document.getElementById("valor7").value);
+	var valor8 = parseInt(document.getElementById("valor8").value);
+	var valor9 = parseInt(document.getElementById("valor9").value);
+	var valor10 = parseInt(document.getElementById("valor10").value);
+	var valor11 = parseInt(document.getElementById("valor11").value);
+	var valor12 = parseInt(document.getElementById("valor12").value);
+	var valor13 = parseInt(document.getElementById("valor13").value);
+	var valor14 = parseInt(document.getElementById("valor14").value);
+	var valor15 = parseInt(document.getElementById("valor15").value);
+	var valor16 = parseInt(document.getElementById("valor16").value);
+	var valor17 = parseInt(document.getElementById("valor17").value);
+	var valor18 = parseInt(document.getElementById("valor18").value);
+	var valor19 = parseInt(document.getElementById("valor19").value);
+	var valor20 = parseInt(document.getElementById("valor20").value);
+	var valor21 = parseInt(document.getElementById("valor21").value);
+	var valor22 = parseInt(document.getElementById("valor22").value);
+	var valor23 = parseInt(document.getElementById("valor23").value);
+	var valor24 = parseInt(document.getElementById("valor24").value);
+	var valor25 = parseInt(document.getElementById("valor25").value);
+
+	var array1 = [valor1, valor2, valor3, valor4, valor5];
+	var array2 = [valor6, valor7, valor8, valor9, valor10];
+	var array3 = [valor11, valor12, valor13, valor14, valor15];
+	var array4 = [valor16, valor17, valor18, valor19, valor20];
+	var array5 = [valor21, valor22, valor23, valor24, valor25];
+
 	var convolutionMatrix = [];
-	convolutionMatrix.push([0, 0, 0, 0, 0]);
-	convolutionMatrix.push([0, -1, -2, 1, 0]);
-	convolutionMatrix.push([0, -2, 0, 2, 0]);
-	convolutionMatrix.push([0, -1, 2, 1, 0]);
-	convolutionMatrix.push([0, 0, 0, 0, 0]);
+	convolutionMatrix.push(array1);
+	convolutionMatrix.push(array2);
+	convolutionMatrix.push(array3);
+	convolutionMatrix.push(array4);
+	convolutionMatrix.push(array5);
 
 	for (var linha = 0; linha < imageHeight; linha++){
 		for (var coluna = 0; coluna < imageWidth; coluna++){
@@ -565,12 +597,45 @@ function convolutionAverage(){
 
 	var imageMatrix = JSON.parse(JSON.stringify(originalImageMatrix));
 
+	var valor1 = parseInt(document.getElementById("valor1").value);
+	var valor2 = parseInt(document.getElementById("valor2").value);
+	var valor3 = parseInt(document.getElementById("valor3").value);
+	var valor4 = parseInt(document.getElementById("valor4").value);
+	var valor5 = parseInt(document.getElementById("valor5").value);
+	var valor6 = parseInt(document.getElementById("valor6").value);
+	var valor7 = parseInt(document.getElementById("valor7").value);
+	var valor8 = parseInt(document.getElementById("valor8").value);
+	var valor9 = parseInt(document.getElementById("valor9").value);
+	var valor10 = parseInt(document.getElementById("valor10").value);
+	var valor11 = parseInt(document.getElementById("valor11").value);
+	var valor12 = parseInt(document.getElementById("valor12").value);
+	var valor13 = parseInt(document.getElementById("valor13").value);
+	var valor14 = parseInt(document.getElementById("valor14").value);
+	var valor15 = parseInt(document.getElementById("valor15").value);
+	var valor16 = parseInt(document.getElementById("valor16").value);
+	var valor17 = parseInt(document.getElementById("valor17").value);
+	var valor18 = parseInt(document.getElementById("valor18").value);
+	var valor19 = parseInt(document.getElementById("valor19").value);
+	var valor20 = parseInt(document.getElementById("valor20").value);
+	var valor21 = parseInt(document.getElementById("valor21").value);
+	var valor22 = parseInt(document.getElementById("valor22").value);
+	var valor23 = parseInt(document.getElementById("valor23").value);
+	var valor24 = parseInt(document.getElementById("valor24").value);
+	var valor25 = parseInt(document.getElementById("valor25").value);
+
+	var array1 = [valor1, valor2, valor3, valor4, valor5];
+	var array2 = [valor6, valor7, valor8, valor9, valor10];
+	var array3 = [valor11, valor12, valor13, valor14, valor15];
+	var array4 = [valor16, valor17, valor18, valor19, valor20];
+	var array5 = [valor21, valor22, valor23, valor24, valor25];
+
 	var convolutionMatrix = [];
-	convolutionMatrix.push([0, 0, 0, 0, 0]);
-	convolutionMatrix.push([0, 1, 1, 1, 0]);
-	convolutionMatrix.push([0, 1, 1, 1, 0]);
-	convolutionMatrix.push([0, 1, 1, 1, 0]);
-	convolutionMatrix.push([0, 0, 0, 0, 0]);
+	convolutionMatrix.push(array1);
+	convolutionMatrix.push(array2);
+	convolutionMatrix.push(array3);
+	convolutionMatrix.push(array4);
+	convolutionMatrix.push(array5);
+
 
 	var div = 1;
 
@@ -649,12 +714,45 @@ function convolutionWeighted(){
 
 	var imageMatrix = JSON.parse(JSON.stringify(originalImageMatrix));
 
+	var valor1 = parseInt(document.getElementById("valor1").value);
+	var valor2 = parseInt(document.getElementById("valor2").value);
+	var valor3 = parseInt(document.getElementById("valor3").value);
+	var valor4 = parseInt(document.getElementById("valor4").value);
+	var valor5 = parseInt(document.getElementById("valor5").value);
+	var valor6 = parseInt(document.getElementById("valor6").value);
+	var valor7 = parseInt(document.getElementById("valor7").value);
+	var valor8 = parseInt(document.getElementById("valor8").value);
+	var valor9 = parseInt(document.getElementById("valor9").value);
+	var valor10 = parseInt(document.getElementById("valor10").value);
+	var valor11 = parseInt(document.getElementById("valor11").value);
+	var valor12 = parseInt(document.getElementById("valor12").value);
+	var valor13 = parseInt(document.getElementById("valor13").value);
+	var valor14 = parseInt(document.getElementById("valor14").value);
+	var valor15 = parseInt(document.getElementById("valor15").value);
+	var valor16 = parseInt(document.getElementById("valor16").value);
+	var valor17 = parseInt(document.getElementById("valor17").value);
+	var valor18 = parseInt(document.getElementById("valor18").value);
+	var valor19 = parseInt(document.getElementById("valor19").value);
+	var valor20 = parseInt(document.getElementById("valor20").value);
+	var valor21 = parseInt(document.getElementById("valor21").value);
+	var valor22 = parseInt(document.getElementById("valor22").value);
+	var valor23 = parseInt(document.getElementById("valor23").value);
+	var valor24 = parseInt(document.getElementById("valor24").value);
+	var valor25 = parseInt(document.getElementById("valor25").value);
+
+	var array1 = [valor1, valor2, valor3, valor4, valor5];
+	var array2 = [valor6, valor7, valor8, valor9, valor10];
+	var array3 = [valor11, valor12, valor13, valor14, valor15];
+	var array4 = [valor16, valor17, valor18, valor19, valor20];
+	var array5 = [valor21, valor22, valor23, valor24, valor25];
+
 	var convolutionMatrix = [];
-	convolutionMatrix.push([0, 0, 0, 0, 0]);
-	convolutionMatrix.push([0, 0, 1, 0, 0]);
-	convolutionMatrix.push([0, 1, -4, 1, 0]);
-	convolutionMatrix.push([0, 0, 1, 0, 0]);
-	convolutionMatrix.push([0, 0, 0, 0, 0]);
+	convolutionMatrix.push(array1);
+	convolutionMatrix.push(array2);
+	convolutionMatrix.push(array3);
+	convolutionMatrix.push(array4);
+	convolutionMatrix.push(array5);
+
 
 
 	for (var linha = 0; linha < imageHeight; linha++){
