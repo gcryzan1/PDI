@@ -6,6 +6,8 @@ var imageHeight;
 var originalImageMatrix;
 var imageCanvas;
 
+//var c2 = document.getElementById("myCanvas2");
+//var ctx2 = c2.getContext("2d");
 
 // função para mostrar a imagem selecionada do computador inicialmente sem filtros
 function showImage(input){
@@ -443,7 +445,7 @@ function equalizedHistogram(){
 	}
 
 	var colorCount = countArray(red);
-	var sk = (255/240000);
+	var sk = (255/(imageHeight*imageWidth));
 
 
 	for(var linha = 0; linha < imageHeight; linha++){
@@ -1266,4 +1268,68 @@ function midpointFilter(){
 
 	var midpointImage = matrixToImage(imageMatrix, imageWidth, imageHeight);
 	ctx.putImageData(midpointImage, 0, 0);
+}
+
+function frequencyDomain(){
+	//var x = [];
+
+	var imageMatrix = JSON.parse(JSON.stringify(originalImageMatrix));
+
+	var frequencyHeight = imageHeight * 2;
+	var frequencyWidth = imageWidth * 2;
+
+	var frequencyMatrix = [];
+
+
+	for (var linha = 0; linha < frequencyHeight; linha++){
+		var pixelArray = [];
+		for (var coluna = 0; coluna < frequencyWidth; coluna++){
+
+			var pixel = new Pixel(0, 0, 0, 255);
+			pixelArray.push(pixel);
+			
+			
+			//x.push(pixel.r);
+		}
+		frequencyMatrix.push(pixelArray);
+	}
+
+	for(var linha = 0; linha < imageHeight; linha++){
+		for (var coluna = 0; coluna < imageWidth; coluna++){
+			var pixel = frequencyMatrix[linha][coluna];
+			var pixel2 = imageMatrix[linha][coluna];
+
+			pixel.r = pixel2.r;
+			pixel.g = pixel2.g;
+			pixel.b = pixel2.b;
+
+			//x.push(pixel.r);
+		}
+	}
+
+	for (var linha = 0; linha < frequencyHeight; linha++){
+		for (var coluna = 0; coluna < frequencyWidth; coluna++){
+
+			var pixel = frequencyMatrix[linha][coluna];
+			pixel.r *= Math.pow(-1, linha+coluna);
+			pixel.g *= Math.pow(-1, linha+coluna);
+			pixel.b *= Math.pow(-1, linha+coluna);
+			
+			
+		}
+	}
+
+	/*
+	var trace = {
+		x: x,
+		type: 'histogram',
+	};
+	var data = [trace];
+	Plotly.newPlot('histograma', data); */
+
+	console.log(imageMatrix);
+	console.log(frequencyMatrix);
+
+	var frequencyImage = matrixToImage(frequencyMatrix, frequencyWidth, frequencyHeight);
+	ctx.putImageData(frequencyImage, 0, 0);
 }

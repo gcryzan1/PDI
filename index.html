@@ -9,6 +9,7 @@
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
 
     <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+    <script src="https://rawgithub.com/drom/fourier/master/fourier.js"></script>
 
 	<link rel="stylesheet" type="text/css" href="style.css">
 
@@ -23,6 +24,8 @@
 				<img id="myImage" alt="Bonfire" src="https://i.imgur.com/2mHpuJQ.jpg"><br><br>
 				<h3>Resultado do filtro</h3>
 				<canvas id="myCanvas" width="600" height="400"></canvas><br><br>
+				<!--
+				<canvas id="myCanvas2" width="1200" height="800"></canvas><br><br> -->
 				<center><input type="file" id="imageFile" value="Selecione arquivo" onchange="showImage(this)"/></br></center>
 				<h3>Histograma</h3>
 				<div id="histograma"></div><br><br><br>
@@ -123,6 +126,8 @@
 					<div class="col-lg-1"><input class="input" type="number" id="valor25" value="0"></div>
 
 				</div>
+
+				<div class="col-lg-2"><input class="button" type="button" value="Frequência" onclick="frequencyDomain()" /></div>
 
 				<script type="text/javascript" src="classes.js"></script>
 				<script type="text/javascript" src="index.js"></script>
