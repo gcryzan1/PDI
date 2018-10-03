@@ -15,134 +15,375 @@
 
 </head>
 <body>
-	<div class="container-fluid">
-		<div class="col-md-10 col-md-offset-1">
-			<div class="row">
-				<center><h2>Trabalho de Processamento de Imagens</h2></center><br><br>
-				<center><div class="col-xs-12">
-				<h3>Original</h3>
-				<img id="myImage" alt="Bonfire" src="https://i.imgur.com/2mHpuJQ.jpg"><br><br>
-				<h3>Resultado do filtro</h3>
-				<canvas id="myCanvas" width="600" height="400"></canvas><br><br>
-				<!--
-				<canvas id="myCanvas2" width="1200" height="800"></canvas><br><br> -->
-				<center><input type="file" id="imageFile" value="Selecione arquivo" onchange="showImage(this)"/></br></center>
-				<h3>Histograma</h3>
-				<div id="histograma"></div><br><br><br>
-				</div></center>
-				<div class="col-lg-12">
-					<div class="col-lg-2"><input class="button" type="button" value="Negativo" onclick="negativeFilter()" /></div>
-					<div class="col-lg-2"><input class="button" type="button" value="Equalizar imagem" onclick="equalizedHistogram()" /></div>
-					<div class="col-lg-1"></div>
-					<div class="col-lg-2"><input class="button" type="button" value="Logaritmo" onclick="logFilter()" /></div>
-					<div class="col-lg-2"><input class="input" type="number" min="0" max="255" value="30" id="constante"></div>
-
-					<div class="col-lg-2"><input class="button" type="button" value="Binário" onclick="sliceByBit()" /></div>
-					<div class="col-lg-1"><input class="input" type="number" min="1" max="8" value="0" id="bit"></div>
-				</div>
-				<hr class="hr">
-				<div class="col-lg-12">					
-					<div class="col-lg-2"><input class="button" type="button" value="Limiarização" onclick="sliceByValue()" /></div>
-					<div class="col-lg-2"><input class="input" type="number" min="0" max="255" value="0" id="value"></div>
-
-					<div class="col-lg-2"><input class="button" type="button" value="Linear" onclick="linear()" /></div>
-					<div class="col-lg-2"><input class="input" type="number" min="0" max="255" value="0" id="inicio1"></div>
-					<div class="col-lg-4"><input class="input" type="number" min="0" max="255" value="0" id="fim1"></div>
-					<div class="col-lg-2"><input class="input" type="number" min="0" max="255" value="0" id="inicio2"></div>
-					<div class="col-lg-2"><input class="input" type="number" min="0" max="255" value="0" id="fim2"></div>
-				</div><br />
-				<hr class="hr">
-				<div class="col-lg-12">
-					
-					<div class="col-lg-2"><input class="button" type="button" value="Potência" onclick="powFilter()" /></div>
-					<div class="col-lg-2"><input class="input" type="float" value="0.4" min="0.4" max="25.0" id="gamma"></div>
-					<div class="col-lg-2"><input class="input" type="number" min="0" max="255" value="30" id="constante"></div>
-				
-				</div>
-				<hr class="hr">	
-				<div class="col-lg-12">
-
-					<div class="col-lg-4"><input class="button" type="button" value="Convolução" onclick="convolution()" /></div>
-					<div class="col-lg-4"><input class="button" type="button" value="Média" onclick="convolutionAverage()" /></div>
-					<div class="col-lg-4"><input class="button" type="button" value="Média Ponderada" onclick="convolutionWeighted()" /></div>
-					
-				</div>
-				
-				<div class="container">
-				
-					<div class="col-lg-1"><input class="input" type="number" id="valor1" value="0"></div>	
-					<div class="col-lg-1"><input class="input" type="number" id="valor2" value="0"></div>
-					<div class="col-lg-1"><input class="input" type="number" id="valor3" value="0"></div>
-					<div class="col-lg-1"><input class="input" type="number" id="valor4" value="0"></div>
-					<div class="col-lg-1"><input class="input" type="number" id="valor5" value="0"></div>
-
-				</div>
-
-				<div class="container">
-					
-					<div class="col-lg-1"><input class="input" type="number" id="valor6" value="0"></div>	
-					<div class="col-lg-1"><input class="input" type="number" id="valor7" value="0"></div>
-					<div class="col-lg-1"><input class="input" type="number" id="valor8" value="0"></div>
-					<div class="col-lg-1"><input class="input" type="number" id="valor9" value="0"></div>
-					<div class="col-lg-1"><input class="input" type="number" id="valor10" value="0"></div>
-
-				</div>
-
-				<div class="container">
-				
-					<div class="col-lg-1"><input class="input" type="number" id="valor11" value="0"></div>	
-					<div class="col-lg-1"><input class="input" type="number" id="valor12" value="0"></div>
-					<div class="col-lg-1"><input class="input" type="number" id="valor13" value="0"></div>
-					<div class="col-lg-1"><input class="input" type="number" id="valor14" value="0"></div>
-					<div class="col-lg-1"><input class="input" type="number" id="valor15" value="0"></div>
 	
-				</div>
-
-				<div class="container">
-					
-					<div class="col-lg-1"><input class="input" type="number" id="valor16" value="0"></div>	
-					<div class="col-lg-1"><input class="input" type="number" id="valor17" value="0"></div>
-					<div class="col-lg-1"><input class="input" type="number" id="valor18" value="0"></div>
-					<div class="col-lg-1"><input class="input" type="number" id="valor19" value="0"></div>
-					<div class="col-lg-1"><input class="input" type="number" id="valor20" value="0"></div>
-
-				</div>
-
-				<div class="container">
-					
-					<div class="col-lg-1"><input class="input" type="number" id="valor21" value="0"></div>	
-					<div class="col-lg-1"><input class="input" type="number" id="valor22" value="0"></div>
-					<div class="col-lg-1"><input class="input" type="number" id="valor23" value="0"></div>
-					<div class="col-lg-1"><input class="input" type="number" id="valor24" value="0"></div>
-					<div class="col-lg-1"><input class="input" type="number" id="valor25" value="0"></div>
-
-				</div>
-
-				<hr class="hr">
+	<div class="container-fluid">
+		
+		<div class="col-md-10 col-md-offset-1">
+			
+			<div class="row">
+				
+				<center><h2>Trabalho de Processamento de Imagens</h2></center><br><br>
+				
+				<center><div class="col-xs-12">
+				
+				<h3>Original</h3>
+				
+				<img id="myImage" alt="Bonfire" src="https://i.imgur.com/2mHpuJQ.jpg"><br><br>
+				
+				<h3>Resultado do filtro</h3>
+				
+				<canvas id="myCanvas" width="600" height="400"></canvas><br><br>
+				
+				<center><input class="pr2" type="file" id="imageFile" value="Selecione arquivo" onchange="showImage(this)"/></br><br><br><br></center>
+				
+				<p class="pr">Selecione um filtro:</p><br><br>
+				
+				<center><select class="selecao" size="5" onchange="mudarInput(this.value)">
+					<!--<option value="nada">Selecione um filtro</option>-->
+					<option value="filtroNegativo">Negativo</option>
+					<option value="filtroEqualizarImagem">Equalizar Imagem</option>
+					<option value="filtroLogaritmo">Logaritmo</option>
+					<option value="filtroBinario">Binário</option>
+					<option value="filtroLimiarizacao">Limiarização</option>
+					<option value="filtroLinear">Linear</option>
+					<option value="filtroPotencia">Potência</option>
+					<option value="filtroConvolucao">Convolução</option>
+					<option value="filtroMedia">Média</option>
+					<option value="filtroMediaPonderada">Média Ponderada</option>
+					<option value="filtroMediana">Mediana</option>
+					<option value="filtroMediaGeometrica">Média Geométrica</option>
+					<option value="filtroMediaHarmonica">Média Harmônica</option>
+					<option value="filtroMaximo">Máximo</option>
+					<option value="filtroMinimo">Mínimo</option>
+					<option value="filtroPontoMedio">Ponto Médio</option>
+					<option value="filtroMediaContraHarmonica">Média Contra-Harmônica</option>
+					<option value="filtroFrequencia">Frequêcia</option>
+				</select><br><br></center>
 
 				
-				<div class="col-lg-12">
-					<div class="col-lg-4"><input class="button" type="button" value="Mediana" onclick="mediana()" /></div>
-					<div class="col-lg-4"><input class="button" type="button" value="Média geométrica" onclick="geometricMean()" /></div>
-					<div class="col-lg-4"><input class="button" type="button" value="Média harmônica" onclick="harmonicMean()" /></div>
+				<div class="container" id="negativo" style="display: none;">
+					<input class="button" type="button" value="Negativo" onclick="negativeFilter()" /><br><br>
 				</div>
+
+				<div class="container" id="equalizarImagem" style="display: none;">
+					<input class="button" type="button" value="Equalizar imagem" onclick="equalizedHistogram()" /><br><br>
+				</div>
+
+
+				<div class="container" id="logaritmo" style="display: none;">
+					<input class="button" type="button" value="Logaritmo" onclick="logFilter()" /><br>
+					<input class="input" type="number" min="0" max="255" value="30" id="constante"><br><br>
+				</div>
+
+				<div class="container" id="binario" style="display: none;">
+					<input class="button" type="button" value="Binário" onclick="sliceByBit()" /><br>
+					<input class="input" type="number" min="1" max="8" value="0" id="bit"><br><br>
+				</div>
+					
+				<div class="container" id="limiarizacao" style="display: none;">
+					<input class="button" type="button" value="Limiarização" onclick="sliceByValue()" /><br>
+					<input class="input" type="number" min="0" max="255" value="0" id="value"><br><br>
+				</div>
+
+				<div class="container" id="linear" style="display: none;">
+					<input class="button" type="button" value="Linear" onclick="linear()" /><br>
+					<div class="col-lg-12">	
+						<div class="col-lg-3">
+							<input class="input" type="number" min="0" max="255" value="0" id="inicio1">
+						</div>
+						
+						<div class="col-lg-3">
+							<input class="input" type="number" min="0" max="255" value="0" id="fim1">
+						</div>
+						<div class="col-lg-3">
+							<input class="input" type="number" min="0" max="255" value="0" id="inicio2">
+						</div>
+						<div class="col-lg-3">
+							<input class="input" type="number" min="0" max="255" value="0" id="fim2">
+						</div>
+					</div><br><br>
+				</div>
+
+				<div class="container" id="potencia" style="display: none;">
+					<input class="button" type="button" value="Potência" onclick="powFilter()" />
+					<div class="col-lg-12">
+					
+						<div class="col-lg-2">
+							<input class="input" type="float" value="0.4" min="0.4" max="25.0" id="gamma">
+						</div>
+					<div class="col-lg-2">
+						<input class="input" type="number" min="0" max="255" value="30" id="constante"></div>
 				
-				<div class="col-lg-12"></div>	
-					<div class="col-lg-4"><input class="button" type="button" value="Máximo" onclick="maximumFilter()" /></div>
-					<div class="col-lg-4"><input class="button" type="button" value="Mínimo" onclick="minimumFilter()" /></div>
-					<div class="col-lg-4"><input class="button" type="button" value="Ponto Médio" onclick="midpointFilter()"/>
+					</div><br><br>
+				</div>
+
+				<div class="container" id="convolucao" style="display: none;">
+					<input class="button" type="button" value="Convolução" onclick="convolution()" /><br>	
+					<div class="container">
+				
+						<div class="col-lg-1"><input class="input" type="number" id="valor1" value="0"></div>	
+						<div class="col-lg-1"><input class="input" type="number" id="valor2" value="0"></div>
+						<div class="col-lg-1"><input class="input" type="number" id="valor3" value="0"></div>
+						<div class="col-lg-1"><input class="input" type="number" id="valor4" value="0"></div>
+						<div class="col-lg-1"><input class="input" type="number" id="valor5" value="0"></div>
+
 					</div>
+
+					<div class="container">
+					
+						<div class="col-lg-1"><input class="input" type="number" id="valor6" value="0"></div>	
+						<div class="col-lg-1"><input class="input" type="number" id="valor7" value="0"></div>
+						<div class="col-lg-1"><input class="input" type="number" id="valor8" value="0"></div>
+						<div class="col-lg-1"><input class="input" type="number" id="valor9" value="0"></div>
+						<div class="col-lg-1"><input class="input" type="number" id="valor10" value="0"></div>
+
+					</div>
+
+					<div class="container">
+					
+						<div class="col-lg-1"><input class="input" type="number" id="valor11" value="0"></div>	
+						<div class="col-lg-1"><input class="input" type="number" id="valor12" value="0"></div>
+						<div class="col-lg-1"><input class="input" type="number" id="valor13" value="0"></div>
+						<div class="col-lg-1"><input class="input" type="number" id="valor14" value="0"></div>
+						<div class="col-lg-1"><input class="input" type="number" id="valor15" value="0"></div>
+		
+					</div>
+
+					<div class="container">
+						
+						<div class="col-lg-1"><input class="input" type="number" id="valor16" value="0"></div>	
+						<div class="col-lg-1"><input class="input" type="number" id="valor17" value="0"></div>
+						<div class="col-lg-1"><input class="input" type="number" id="valor18" value="0"></div>
+						<div class="col-lg-1"><input class="input" type="number" id="valor19" value="0"></div>
+						<div class="col-lg-1"><input class="input" type="number" id="valor20" value="0"></div>
+
+					</div>
+
+					<div class="container">
+						
+						<div class="col-lg-1"><input class="input" type="number" id="valor21" value="0"></div>	
+						<div class="col-lg-1"><input class="input" type="number" id="valor22" value="0"></div>
+						<div class="col-lg-1"><input class="input" type="number" id="valor23" value="0"></div>
+						<div class="col-lg-1"><input class="input" type="number" id="valor24" value="0"></div>
+						<div class="col-lg-1"><input class="input" type="number" id="valor25" value="0"></div>
+
+					</div><br><br>
+
 				</div>
 
-				<div class="col-lg-12"></div>
-					<div class="col-lg-4"><input class="button" type="button" value="Média contra-harmônica" onclick="contraHarmonicMean()" /></div>
-					<div class="col-lg-2"><input class="input" type="number" value="3" id="tamanho"></div>
-					<div class="col-lg-2"><input class="input" type="number" value="1.5" id="q"></div>
+				<div class="container" id="media" style="display: none;">
+					<input class="button" type="button" value="Média" onclick="convolutionAverage()" /><br>
+					<div class="container">
+				
+						<div class="col-lg-1"><input class="input" type="number" id="valor1" value="0"></div>	
+						<div class="col-lg-1"><input class="input" type="number" id="valor2" value="0"></div>
+						<div class="col-lg-1"><input class="input" type="number" id="valor3" value="0"></div>
+						<div class="col-lg-1"><input class="input" type="number" id="valor4" value="0"></div>
+						<div class="col-lg-1"><input class="input" type="number" id="valor5" value="0"></div>
+
+					</div>
+
+					<div class="container">
+						
+						<div class="col-lg-1"><input class="input" type="number" id="valor6" value="0"></div>	
+						<div class="col-lg-1"><input class="input" type="number" id="valor7" value="0"></div>
+						<div class="col-lg-1"><input class="input" type="number" id="valor8" value="0"></div>
+						<div class="col-lg-1"><input class="input" type="number" id="valor9" value="0"></div>
+						<div class="col-lg-1"><input class="input" type="number" id="valor10" value="0"></div>
+
+					</div>
+
+					<div class="container">
+					
+						<div class="col-lg-1"><input class="input" type="number" id="valor11" value="0"></div>	
+						<div class="col-lg-1"><input class="input" type="number" id="valor12" value="0"></div>
+						<div class="col-lg-1"><input class="input" type="number" id="valor13" value="0"></div>
+						<div class="col-lg-1"><input class="input" type="number" id="valor14" value="0"></div>
+						<div class="col-lg-1"><input class="input" type="number" id="valor15" value="0"></div>
+		
+					</div>
+
+					<div class="container">
+						
+						<div class="col-lg-1"><input class="input" type="number" id="valor16" value="0"></div>	
+						<div class="col-lg-1"><input class="input" type="number" id="valor17" value="0"></div>
+						<div class="col-lg-1"><input class="input" type="number" id="valor18" value="0"></div>
+						<div class="col-lg-1"><input class="input" type="number" id="valor19" value="0"></div>
+						<div class="col-lg-1"><input class="input" type="number" id="valor20" value="0"></div>
+
+					</div>
+
+					<div class="container">
+						
+						<div class="col-lg-1"><input class="input" type="number" id="valor21" value="0"></div>	
+						<div class="col-lg-1"><input class="input" type="number" id="valor22" value="0"></div>
+						<div class="col-lg-1"><input class="input" type="number" id="valor23" value="0"></div>
+						<div class="col-lg-1"><input class="input" type="number" id="valor24" value="0"></div>
+						<div class="col-lg-1"><input class="input" type="number" id="valor25" value="0"></div>
+
+					</div><br><br>
+
 				</div>
 
-				<hr class="hr">
+				<div class="container" id="mediaPonderada" style="display: none;">
+					<input class="button" type="button" value="Média Ponderada" onclick="convolutionWeighted()" /><br>
+					<div class="container">
+				
+						<div class="col-lg-1"><input class="input" type="number" id="valor1" value="0"></div>	
+						<div class="col-lg-1"><input class="input" type="number" id="valor2" value="0"></div>
+						<div class="col-lg-1"><input class="input" type="number" id="valor3" value="0"></div>
+						<div class="col-lg-1"><input class="input" type="number" id="valor4" value="0"></div>
+						<div class="col-lg-1"><input class="input" type="number" id="valor5" value="0"></div>
 
-				<center><input class="button" type="button" value="Frequência" onclick="frequencyDomain()" /></center>
+					</div>
+
+					<div class="container">
+						
+						<div class="col-lg-1"><input class="input" type="number" id="valor6" value="0"></div>	
+						<div class="col-lg-1"><input class="input" type="number" id="valor7" value="0"></div>
+						<div class="col-lg-1"><input class="input" type="number" id="valor8" value="0"></div>
+						<div class="col-lg-1"><input class="input" type="number" id="valor9" value="0"></div>
+						<div class="col-lg-1"><input class="input" type="number" id="valor10" value="0"></div>
+
+					</div>
+
+					<div class="container">
+					
+						<div class="col-lg-1"><input class="input" type="number" id="valor11" value="0"></div>	
+						<div class="col-lg-1"><input class="input" type="number" id="valor12" value="0"></div>
+						<div class="col-lg-1"><input class="input" type="number" id="valor13" value="0"></div>
+						<div class="col-lg-1"><input class="input" type="number" id="valor14" value="0"></div>
+						<div class="col-lg-1"><input class="input" type="number" id="valor15" value="0"></div>
+		
+					</div>
+
+					<div class="container">
+						
+						<div class="col-lg-1"><input class="input" type="number" id="valor16" value="0"></div>	
+						<div class="col-lg-1"><input class="input" type="number" id="valor17" value="0"></div>
+						<div class="col-lg-1"><input class="input" type="number" id="valor18" value="0"></div>
+						<div class="col-lg-1"><input class="input" type="number" id="valor19" value="0"></div>
+						<div class="col-lg-1"><input class="input" type="number" id="valor20" value="0"></div>
+
+					</div>
+
+					<div class="container">
+						
+						<div class="col-lg-1"><input class="input" type="number" id="valor21" value="0"></div>	
+						<div class="col-lg-1"><input class="input" type="number" id="valor22" value="0"></div>
+						<div class="col-lg-1"><input class="input" type="number" id="valor23" value="0"></div>
+						<div class="col-lg-1"><input class="input" type="number" id="valor24" value="0"></div>
+						<div class="col-lg-1"><input class="input" type="number" id="valor25" value="0"></div>
+
+					</div><br><br>
+				</div>
+
+				<div class="container" id="mediana" style="display: none;">
+					<input class="button" type="button" value="Mediana" onclick="mediana()" /><br>
+					<center><input class="input" type="number" value="3" id="tamanho"></center><br><br>
+				</div>
+
+				<div class="container" id="mediaGeometrica" style="display: none;">
+					<input class="button" type="button" value="Média geométrica" onclick="geometricMean()" /><br>
+					<center><input class="input" type="number" value="3" id="tamanho"></center><br><br>
+				</div>
+
+				<div class="container" id="mediaHarmonica" style="display: none;">
+					<input class="button" type="button" value="Média harmônica" onclick="harmonicMean()" /><br>
+					<center><input class="input" type="number" value="3" id="tamanho"></center><br><br>
+				</div>
+
+				<div class="container" id="maximo" style="display: none;">
+					<input class="button" type="button" value="Máximo" onclick="maximumFilter()" /><br>
+					<center><input class="input" type="number" value="3" id="tamanho"></center><br><br>
+				</div>
+
+				<div class="container" id="minimo" style="display: none;">
+					<input class="button" type="button" value="Mínimo" onclick="minimumFilter()" /><br>
+					<center><input class="input" type="number" value="3" id="tamanho"></center><br><br>
+				</div>
+
+				<div class="container" id="pontoMedio" style="display: none;">
+					<input class="button" type="button" value="Ponto Médio" onclick="midpointFilter()"/><br>
+					<center><input class="input" type="number" value="3" id="tamanho"></center><br><br>
+				</div>
+
+				<div class="container" id="mediaContraHarmonica" style="display: none;">
+					<input class="button" type="button" value="Média contra-harmônica" onclick="contraHarmonicMean()" /><br>
+					<center><input class="input" type="number" value="3" id="tamanho"></center><br>
+					<center><input class="input" type="number" value="1.5" id="q"></center><br><br>
+				</div>
+
+				<div class="container" id="frequencia" style="display: none;">
+					<input class="button" type="button" value="Frequência" onclick="frequencyDomain()" /><br>
+					<center><input class="input" type="number" value="3" id="tamanho"></center><br><br>
+				</div>				
+
+				<div class="container" id="default" style="display: none;">
+					
+				</div>
+
+				<h3>Histograma</h3>
+				
+				<div id="histograma"></div><br><br><br>
+
+				<script type="text/javascript">
+					
+					var arrayId = ["negativo","equalizarImagem","logaritmo","binario","limiarizacao","linear","potencia","convolucao","media","mediana","mediaPonderada","mediaGeometrica","mediaHarmonica","maximo","minimo","pontoMedio","mediaContraHarmonica","frequencia","default"];
+
+					function mostrarDivParametro(atual){
+						document.getElementById(atual).style.display = "block";
+						
+						for(var i = 0; i < arrayId.length ; i++){
+							if (arrayId[i] != atual) {
+								document.getElementById(arrayId[i]).style.display = "none";		
+							}
+						}
+					}
+					
+					function mudarInput(value){
+						if (value == "filtroNegativo") {
+							mostrarDivParametro("negativo");
+						}else if (value == "filtroEqualizarImagem") {
+							mostrarDivParametro("equalizarImagem");
+						}else if(value == "filtroLogaritmo"){
+							mostrarDivParametro("logaritmo");
+						}else if(value == "filtroBinario"){
+							mostrarDivParametro("binario");	
+						}else if(value == "filtroLimiarizacao"){
+							mostrarDivParametro("limiarizacao");
+						}else if(value == "filtroLinear"){
+							mostrarDivParametro("linear");
+						}else if(value == "filtroPotencia"){
+							mostrarDivParametro("potencia");
+						}else if(value == "filtroConvolucao"){
+							mostrarDivParametro("convolucao");
+						}else if(value == "filtroMedia"){
+							mostrarDivParametro("media");
+						}else if(value == "filtroMediaPonderada"){
+							mostrarDivParametro("mediaPonderada");
+						}else if(value == "filtroMediana"){
+							mostrarDivParametro("mediana");
+						}else if(value == "filtroMediaGeometrica"){
+							mostrarDivParametro("mediaGeometrica");
+						}else if(value == "filtroMediaHarmonica"){
+							mostrarDivParametro("mediaHarmonica");
+						}else if(value == "filtroMaximo"){
+							mostrarDivParametro("maximo");
+						}else if(value == "filtroMinimo"){
+							mostrarDivParametro("minimo");
+						}else if(value == "filtroPontoMedio"){
+							mostrarDivParametro("pontoMedio");
+						}else if(value == "filtroMediaContraHarmonica"){
+							mostrarDivParametro("mediaContraHarmonica");
+						}else if(value == "filtroFrequencia"){
+							mostrarDivParametro("frequencia");
+						}else if(value == "nada"){
+							mostrarDivParametro("default");
+						}
+					}
+
+				</script>
 
 				<script type="text/javascript" src="classes.js"></script>
 				<script type="text/javascript" src="index.js"></script>
