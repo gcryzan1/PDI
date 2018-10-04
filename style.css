@@ -14,6 +14,7 @@ body{
 	background-color: #F5DEB3;
     background-image: url(https://newevolutiondesigns.com/images/freebies/abstract-background-25.jpg);
     background-size: cover;
+    font-family: 'Actor';
 }
 
 .hr{
@@ -27,14 +28,33 @@ body{
 margin-top:20px;
 */
 .input{
-    margin-top:15px;
-   	margin-left: 70px;
+    /*margin-top:15px;
+   	margin-left: 70px;*/
+    margin-top: 5%;
+    margin-bottom:5%;     
+    margin-right: 50%;
+    margin-left:46%; 
     width:60px;
     height:30px;    
     border-radius:8px;
     font-size: 17px;
 
 }
+
+.input2{
+    /*margin-top:15px;
+    margin-left: 70px;*/
+    margin-top: 5%;
+    margin-bottom:5%;     
+    margin-right: 50%;
+    margin-left:46%; 
+    width:80px;
+    height:50px;    
+    border-radius:8px;
+    font-size: 25px;
+
+}
+
 
 .button{
     background-color: black;
@@ -49,7 +69,7 @@ margin-top:20px;
     margin-top: 5%;
     margin-bottom:5%;     
     margin-right: 50%;
-    margin-left:46%; 
+    margin-left:44%; 
     
 }
 
@@ -86,4 +106,6 @@ margin-top:20px;
     border-radius: 8px;
     border-width: 5px;
     border-color: black;
+    background-image: url(https://newevolutiondesigns.com/images/freebies/abstract-background-25.jpg);
+    background-size: cover;
 }
