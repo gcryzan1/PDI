@@ -10,6 +10,12 @@
     border-radius: 8px;
 }
 
+#color {
+    width: 200px;
+    height: 200px;
+    border: 1px black solid;
+}
+
 body{
 	background-color: #F5DEB3;
     background-image: url(https://newevolutiondesigns.com/images/freebies/abstract-background-25.jpg);

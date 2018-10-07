@@ -1333,3 +1333,294 @@ function frequencyDomain(){
 	var frequencyImage = matrixToImage(frequencyMatrix, frequencyWidth, frequencyHeight);
 	ctx.putImageData(frequencyImage, 0, 0);
 }
+
+function colorConverter(component){
+	if (component == "RGB"){
+		var r = parseInt(document.getElementById("r").value);
+		var g = parseInt(document.getElementById("g").value);
+		var b = parseInt(document.getElementById("b").value);
+
+		document.getElementById("comp-r").textContent = "Red: " + r;
+		document.getElementById("comp-g").textContent = "Green: " + g;
+		document.getElementById("comp-b").textContent = "Blue: " + b;
+
+		document.getElementById("color").style.backgroundColor = "rgb(" + r + ", " + g + ", " + b + ")";
+
+		convertRGBToCMY(r, g, b);
+		convertRGBToHSI(r, g, b);
+
+	} else if (component == "CMY"){
+
+		var c = parseInt(document.getElementById("c").value);
+		var m = parseInt(document.getElementById("m").value);
+		var y = parseInt(document.getElementById("y").value);
+
+		document.getElementById("comp-c").textContent = "Cyan: " + c;
+		document.getElementById("comp-m").textContent = "Magenta: " + m;
+		document.getElementById("comp-y").textContent = "Yellow: " + y;
+
+		convertCMYToRGB(c, m, y);
+		convertCMYToHSI(c, m, y);
+
+	} else if (component == "HSI"){
+
+		var h = parseInt(document.getElementById("h").value);
+		var s = parseInt(document.getElementById("s").value);
+		var i = parseInt(document.getElementById("i").value);
+
+		document.getElementById("comp-h").textContent = "Hue: " + h;
+		document.getElementById("comp-s").textContent = "Saturation: " + s;
+		document.getElementById("comp-i").textContent = "Intensity: " + i;
+
+		convertHSIToRGB(h, s, i);
+		convertHSIToCMY(h, s, i);
+	}
+}
+
+function convertRGBToCMY(r, g, b){
+	var c = 255 - r;
+	var m = 255 - g;
+	var y = 255 - b;
+
+	document.getElementById("c").value = c;
+	document.getElementById("m").value = m;
+	document.getElementById("y").value = y;
+
+	document.getElementById("comp-c").textContent = "Cyan: " + c;
+	document.getElementById("comp-m").textContent = "Magenta: " + m;
+	document.getElementById("comp-y").textContent = "Yellow: " + y;
+
+
+}
+
+function convertCMYToRGB(c, m, y){
+	var r = 255 - c;
+	var g = 255 - m;
+	var b = 255 - y;
+
+	document.getElementById("r").value = r;
+	document.getElementById("g").value = g;
+	document.getElementById("b").value = b;
+
+	document.getElementById("comp-r").textContent = "Red: " + r;
+	document.getElementById("comp-g").textContent = "Green: " + g;
+	document.getElementById("comp-b").textContent = "Blue: " + b;
+
+	document.getElementById("color").style.backgroundColor = "rgb(" + r + ", " + g + ", " + b + ")";
+}
+
+function convertRGBToHSI(r, g, b){
+	var rNorm = r / (r + g + b);
+	var gNorm = g / (r + g + b);
+	var bNorm = b / (r + g + b);
+
+	if (b <= g){
+		var p1 = 0.5 * ((rNorm - gNorm) + (rNorm - bNorm));
+		var p2 = Math.sqrt((rNorm - gNorm)**2 + (rNorm - bNorm)*(gNorm - bNorm));
+		var h = Math.acos(p1/p2);
+	} else {
+		var p1 = 0.5 * ((rNorm - gNorm) + (rNorm - bNorm));
+		var p2 = Math.sqrt((rNorm - gNorm)**2 + (rNorm - bNorm)*(gNorm - bNorm));
+		var h = 2*(Math.PI) - Math.acos(p1/p2);
+	}
+
+	var s = 1 - 3 * Math.min(rNorm, gNorm, bNorm);
+	var i = (r + g + b)/(3 * 255);
+
+	h = h * 180/(Math.PI);
+	s *= 100;
+	i *= 255;
+
+	(isNaN(h) == true) ? h = 0 : '';
+	(isNaN(s) == true) ? s = 0 : '';
+	(isNaN(i) == true) ? i = 0 : '';
+
+	h = Math.round(h);
+	s = Math.round(s);
+	i = Math.round(i);
+
+	document.getElementById("h").value = h;
+	document.getElementById("s").value = s;
+	document.getElementById("i").value = i;
+
+	document.getElementById("comp-h").textContent = "Hue: " + h;
+	document.getElementById("comp-s").textContent = "Saturation: " + s;
+	document.getElementById("comp-i").textContent = "Intensity: " + i;
+
+}
+
+function convertCMYToHSI(c, m, y){
+	var r = 255 - c;
+	var g = 255 - m;
+	var b = 255 - y;
+
+
+	var rNorm = r / (r + g + b);
+	var gNorm = g / (r + g + b);
+	var bNorm = b / (r + g + b);
+
+	if (b <= g){
+		var p1 = 0.5 * ((rNorm - gNorm) + (rNorm - bNorm));
+		var p2 = Math.sqrt((rNorm - gNorm)**2 + (rNorm - bNorm)*(gNorm - bNorm));
+		var h = Math.acos(p1/p2);
+	} else {
+		var p1 = 0.5 * ((rNorm - gNorm) + (rNorm - bNorm));
+		var p2 = Math.sqrt((rNorm - gNorm)**2 + (rNorm - bNorm)*(gNorm - bNorm));
+		var h = 2*(Math.PI) - Math.acos(p1/p2);
+	}
+
+	var s = 1 - 3 * Math.min(rNorm, gNorm, bNorm);
+	var i = (r + g + b)/(3 * 255);
+
+	h = h * 180/(Math.PI);
+	s *= 100;
+	i *= 255;
+
+	(isNaN(h) == true) ? h = 0 : '';
+	(isNaN(s) == true) ? s = 0 : '';
+	(isNaN(i) == true) ? i = 0 : '';
+
+	h = Math.round(h);
+	s = Math.round(s);
+	i = Math.round(i);
+
+	document.getElementById("h").value = h;
+	document.getElementById("s").value = s;
+	document.getElementById("i").value = i;
+
+	document.getElementById("comp-h").textContent = "Hue: " + h;
+	document.getElementById("comp-s").textContent = "Saturation: " + s;
+	document.getElementById("comp-i").textContent = "Intensity: " + i;
+
+}
+
+function convertHSIToRGB(h, s, i){
+	h = h * (Math.PI)/180;
+	s = s/100;
+	i = i/255;
+
+	if (h < 2*(Math.PI)/3){
+		var x = i*(1 - s);
+		x = Math.min(x,1);
+		var y = i*(1 + ((s*Math.cos(h))/(Math.cos(((Math.PI)/3) - h))));
+		y = Math.min(y,1);
+		var z = 3*i - (x + y);
+		z = Math.min(z,1);
+
+		var r = y;
+		var g = z;
+		var b = x;
+	} else if (h >= 2*(Math.PI)/3 && h < 4*(Math.PI)/3){
+		h = h - 2*(Math.PI)/3;
+		var x = i*(1 - s);
+		x = Math.min(x,1);
+		var y = i*(1 + ((s*Math.cos(h))/(Math.cos(((Math.PI)/3) - h))));
+		y = Math.min(y,1);
+		var z = 3*i - (x + y);
+		z = Math.min(z,1);
+
+		var r = x;
+		var g = y;
+		var b = z;
+	} else if (h >= 4*(Math.PI)/3 && h <= 2*(Math.PI)){
+		h = h - 4*(Math.PI)/3;
+		var x = i*(1 - s);
+		x = Math.min(x,1);
+		var y = i*(1 + ((s*Math.cos(h))/(Math.cos(((Math.PI)/3) - h))));
+		y = Math.min(y,1);
+		var z = 3*i - (x + y);
+		z = Math.min(z,1);
+
+		var r = z;
+		var g = x;
+		var b = y;
+	}
+
+	r *= 255;
+	g *= 255;
+	b *= 255;
+
+	r = Math.round(r);
+	g = Math.round(g);
+	b = Math.round(b);
+
+	(isNaN(r) == true) ? r = 0 : '';
+	(isNaN(g) == true) ? g = 0 : '';
+	(isNaN(b) == true) ? b = 0 : '';
+
+	document.getElementById("r").value = r;
+	document.getElementById("g").value = g;
+	document.getElementById("b").value = b;
+
+	document.getElementById("comp-r").textContent = "Red: " + r;
+	document.getElementById("comp-g").textContent = "Green: " + g;
+	document.getElementById("comp-b").textContent = "Blue: " + b;
+
+	document.getElementById("color").style.backgroundColor = "rgb(" + r + ", " + g + ", " + b + ")";
+
+}
+
+function convertHSIToCMY(h, s, i){
+	h = h * (Math.PI)/180;
+	s = s/100;
+	i = i/255;
+
+	if (h < 2*(Math.PI)/3){
+		var x = i*(1 - s);
+		x = Math.min(x,1);
+		var y = i*(1 + ((s*Math.cos(h))/(Math.cos(((Math.PI)/3) - h))));
+		y = Math.min(y,1);
+		var z = 3*i - (x + y);
+		z = Math.min(z,1);
+
+		var r = y;
+		var g = z;
+		var b = x;
+	} else if (h >= 2*(Math.PI)/3 && h < 4*(Math.PI)/3){
+		h = h - 2*(Math.PI)/3;
+		var x = i*(1 - s);
+		x = Math.min(x,1);
+		var y = i*(1 + ((s*Math.cos(h))/(Math.cos(((Math.PI)/3) - h))));
+		y = Math.min(y,1);
+		var z = 3*i - (x + y);
+		z = Math.min(z,1);
+
+		var r = x;
+		var g = y;
+		var b = z;
+	} else if (h >= 4*(Math.PI)/3 && h <= 2*(Math.PI)){
+		h = h - 4*(Math.PI)/3;
+		var x = i*(1 - s);
+		x = Math.min(x,1);
+		var y = i*(1 + ((s*Math.cos(h))/(Math.cos(((Math.PI)/3) - h))));
+		y = Math.min(y,1);
+		var z = 3*i - (x + y);
+		z = Math.min(z,1);
+
+		var r = z;
+		var g = x;
+		var b = y;
+	}
+
+	r *= 255;
+	g *= 255;
+	b *= 255;
+
+	var c = Math.round(255 - r);
+	var m = Math.round(255 - g);
+	var y = Math.round(255 - b);
+
+	(isNaN(c) == true) ? c = 0 : '';
+	(isNaN(m) == true) ? m = 0 : '';
+	(isNaN(y) == true) ? y = 0 : '';
+
+	document.getElementById("c").value = c;
+	document.getElementById("m").value = m;
+	document.getElementById("y").value = y;
+
+	document.getElementById("comp-c").textContent = "Cyan: " + c;
+	document.getElementById("comp-m").textContent = "Magenta: " + m;
+	document.getElementById("comp-y").textContent = "Yellow: " + y;
+
+
+}

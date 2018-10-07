@@ -363,6 +363,59 @@
 				
 				<div id="histograma"></div><br><br><br>
 
+
+				<h3>RGB:</h3>
+
+				<div class="slidecontainer">
+					<p id="comp-r">Red: 0</p>
+  					<input type="range" min="0" max="255" value="0" class="slider" id="r" oninput="colorConverter('RGB')">
+				</div><br><br>
+				<div class="slidecontainer">
+					<p id="comp-g">Green: 0</p>
+  					<input type="range" min="0" max="255" value="0" class="slider" id="g" oninput="colorConverter('RGB')">
+				</div><br><br>
+				<div class="slidecontainer">
+					<p id="comp-b">Blue: 0</p>
+  					<input type="range" min="0" max="255" value="0" class="slider" id="b" oninput="colorConverter('RGB')">
+				</div><br><br>
+
+				<h3>CMY:</h3>
+
+				<div class="slidecontainer">
+					<p id="comp-c">Cyan: 0</p>
+  					<input type="range" min="0" max="255" value="0" class="slider" id="c" oninput="colorConverter('CMY')">
+				</div><br><br>
+				<div class="slidecontainer">
+					<p id="comp-m">Magenta: 0</p>
+  					<input type="range" min="0" max="255" value="0" class="slider" id="m" oninput="colorConverter('CMY')">
+				</div><br><br>
+				<div class="slidecontainer">
+					<p id="comp-y">Yellow: 0</p>
+  					<input type="range" min="0" max="255" value="0" class="slider" id="y" oninput="colorConverter('CMY')">
+				</div><br><br>
+
+				<h3>HSI:</h3>
+
+				<div class="slidecontainer">
+					<p id="comp-h">Hue: 0</p>
+  					<input type="range" min="0" max="360" value="0" class="slider" id="h" oninput="colorConverter('HSI')">
+				</div><br><br>
+				<div class="slidecontainer">
+					<p id="comp-s">Saturation: 0</p>
+  					<input type="range" min="0" max="100" value="0" class="slider" id="s" oninput="colorConverter('HSI')">
+				</div><br><br>
+				<div class="slidecontainer">
+					<p id="comp-i">Intensity: 0</p>
+  					<input type="range" min="0" max="255" value="0" class="slider" id="i" oninput="colorConverter('HSI')">
+				</div><br><br>
+
+				<center>
+					<div id="color">
+					
+					</div>
+				</center>
+				<br><br><br>
+
 				<script type="text/javascript">
 					
 					var arrayId = ["negativo","equalizarImagem","logaritmo","binario","limiarizacao","linear","potencia","convolucao","media","mediana","mediaPonderada","mediaGeometrica","mediaHarmonica","maximo","minimo","pontoMedio","mediaContraHarmonica","frequencia","default"];
