@@ -15,6 +15,8 @@
 
 	<link href='https://fonts.googleapis.com/css?family=Actor' rel='stylesheet'>
 
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+
 </head>
 <body>
 	
@@ -363,56 +365,96 @@
 				
 				<div id="histograma"></div><br><br><br>
 
+				<div class="col-lg-12">
 
-				<h3>RGB:</h3>
+					<div class="col-lg-4">
 
-				<div class="slidecontainer">
-					<p id="comp-r">Red: 0</p>
-  					<input type="range" min="0" max="255" value="0" class="slider" id="r" oninput="colorConverter('RGB')">
-				</div><br><br>
-				<div class="slidecontainer">
-					<p id="comp-g">Green: 0</p>
-  					<input type="range" min="0" max="255" value="0" class="slider" id="g" oninput="colorConverter('RGB')">
-				</div><br><br>
-				<div class="slidecontainer">
-					<p id="comp-b">Blue: 0</p>
-  					<input type="range" min="0" max="255" value="0" class="slider" id="b" oninput="colorConverter('RGB')">
-				</div><br><br>
+						<p class="pr2">RGB:</p>
 
-				<h3>CMY:</h3>
+						<div class="slideContainer">
+							
+							<p id="comp-r">Red: 0</p>
+		  					<input type="range" min="0" max="255" value="0" class="slider" id="r" oninput="colorConverter('RGB')">
+						
+						</div><br><br>
+						
+						<div class="slideContainer">
+							
+							<p id="comp-g">Green: 0</p>
+		  					<input type="range" min="0" max="255" value="0" class="slider" id="g" oninput="colorConverter('RGB')">
+						
+						</div><br><br>
+						
+						<div class="slideContainer">
+							
+							<p id="comp-b">Blue: 0</p>
+		  					<input type="range" min="0" max="255" value="0" class="slider" id="b" oninput="colorConverter('RGB')">
+						
+						</div><br><br>
 
-				<div class="slidecontainer">
-					<p id="comp-c">Cyan: 0</p>
-  					<input type="range" min="0" max="255" value="0" class="slider" id="c" oninput="colorConverter('CMY')">
-				</div><br><br>
-				<div class="slidecontainer">
-					<p id="comp-m">Magenta: 0</p>
-  					<input type="range" min="0" max="255" value="0" class="slider" id="m" oninput="colorConverter('CMY')">
-				</div><br><br>
-				<div class="slidecontainer">
-					<p id="comp-y">Yellow: 0</p>
-  					<input type="range" min="0" max="255" value="0" class="slider" id="y" oninput="colorConverter('CMY')">
-				</div><br><br>
+					</div>
 
-				<h3>HSI:</h3>
+					<div class="col-lg-4">
+						
+						<p class="pr2">CMY:</p>
 
-				<div class="slidecontainer">
-					<p id="comp-h">Hue: 0</p>
-  					<input type="range" min="0" max="360" value="0" class="slider" id="h" oninput="colorConverter('HSI')">
-				</div><br><br>
-				<div class="slidecontainer">
-					<p id="comp-s">Saturation: 0</p>
-  					<input type="range" min="0" max="100" value="0" class="slider" id="s" oninput="colorConverter('HSI')">
-				</div><br><br>
-				<div class="slidecontainer">
-					<p id="comp-i">Intensity: 0</p>
-  					<input type="range" min="0" max="255" value="0" class="slider" id="i" oninput="colorConverter('HSI')">
-				</div><br><br>
+						<div class="slideContainer">
+							
+							<p id="comp-c">Cyan: 0</p>
+		  					<input type="range" min="0" max="255" value="0" class="slider" id="c" oninput="colorConverter('CMY')">
+						
+						</div><br><br>
+						
+						<div class="slideContainer">
+							
+							<p id="comp-m">Magenta: 0</p>
+		  					<input type="range" min="0" max="255" value="0" class="slider" id="m" oninput="colorConverter('CMY')">
+						
+						</div><br><br>
+						
+						<div class="slideContainer">
+							
+							<p id="comp-y">Yellow: 0</p>
+		  					<input type="range" min="0" max="255" value="0" class="slider" id="y" oninput="colorConverter('CMY')">
+						
+						</div><br><br>
 
+					</div>	
+
+					<div class="col-lg-4">
+
+						<p class="pr2">HSI:</p>
+
+						<div class="slideContainer">
+							
+							<p id="comp-h">Hue: 0</p>
+		  					<input type="range" min="0" max="360" value="0" class="slider" id="h" oninput="colorConverter('HSI')">
+						
+						</div><br><br>
+						
+						<div class="slideContainer">
+							
+							<p id="comp-s">Saturation: 0</p>
+		  					<input type="range" min="0" max="100" value="0" class="slider" id="s" oninput="colorConverter('HSI')">
+						
+						</div><br><br>
+						<div class="slideContainer">
+							
+							<p id="comp-i">Intensity: 0</p>
+		  					<input type="range" min="0" max="255" value="0" class="slider" id="i" oninput="colorConverter('HSI')">
+						
+						</div><br><br>
+
+					</div><br><br><br>
+
+				</div>
+				
 				<center>
-					<div id="color">
+					
+					<div class="col-xs-12, container" id="color">
 					
 					</div>
+				
 				</center>
 				<br><br><br>
 
