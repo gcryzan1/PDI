@@ -9,7 +9,7 @@
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
 
     <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
-    <script src="https://rawgithub.com/drom/fourier/master/fourier.js"></script>
+    <!--script src="https://rawgithub.com/drom/fourier/master/fourier.js"></script-->
 
 	<link rel="stylesheet" type="text/css" href="style.css">
 
@@ -39,6 +39,12 @@
 				<canvas id="myCanvas" width="600" height="400"></canvas><br><br>
 				
 				<center><input class="pr2" type="file" id="imageFile" value="Selecione arquivo" onchange="showImage(this)"/></br><br><br><br></center>
+
+				<input class="button" type="button" value="Sépia" onclick="sepia()" /><br>
+				<input class="button" type="button" value="Aumentar Brilho" onclick="upBrightness()" /><br>
+				<input class="button" type="button" value="Diminuir Brilho" onclick="downBrightness()" /><br>
+				<input class="button" type="button" value="Resetar Imagem" onclick="resetImage()" /><br>
+				<input class="button" type="button" value="Chroma Key" onclick="chromaKey()" /><br>
 				
 				<p class="pr">Selecione um filtro:</p><br><br>
 				
@@ -61,7 +67,7 @@
 					<option value="filtroMinimo">Mínimo</option>
 					<option value="filtroPontoMedio">Ponto Médio</option>
 					<option value="filtroMediaContraHarmonica">Média Contra-Harmônica</option>
-					<option value="filtroFrequencia">Frequêcia</option>
+					<option value="filtroFrequencia">Frequência</option>
 				</select><br><br></center>
 
 				
@@ -125,7 +131,7 @@
 
 				<div class="container" id="potencia" style="display: none;">
 					
-					<p>Filtro selecionado: <script type="text/javascript">document.write(atual);</script></p>
+					<!--p>Filtro selecionado: <script type="text/javascript">document.write(atual);</script></p-->
 
 					
 					<input class="input2" type="float" value="0.4" min="0.4" max="25.0" id="gamma"><br>
@@ -516,6 +522,7 @@
 
 				</script>
 
+				<!--script type="text/javascript" src="fourier.js"></script-->
 				<script type="text/javascript" src="classes.js"></script>
 				<script type="text/javascript" src="index.js"></script>
 			</div>

@@ -1327,10 +1327,24 @@ function frequencyDomain(){
 	var data = [trace];
 	Plotly.newPlot('histograma', data); */
 
-	console.log(imageMatrix);
-	console.log(frequencyMatrix);
 
 	var frequencyImage = matrixToImage(frequencyMatrix, frequencyWidth, frequencyHeight);
+	//console.log(frequencyImage);
+
+	var frequencyTransform = [];
+
+	Fourier.transform(frequencyImage, frequencyTransform);
+	Fourier.filter(frequencyTransform, [600,400]);
+
+	var finalTransform = [];
+
+	Fourier.invert(frequencyTransform, finalTransform);
+
+	console.log(finalTransform);
+
+
+
+
 	ctx.putImageData(frequencyImage, 0, 0);
 }
 
@@ -1389,8 +1403,6 @@ function convertRGBToCMY(r, g, b){
 	document.getElementById("comp-c").textContent = "Cyan: " + c;
 	document.getElementById("comp-m").textContent = "Magenta: " + m;
 	document.getElementById("comp-y").textContent = "Yellow: " + y;
-
-
 }
 
 function convertCMYToRGB(c, m, y){
@@ -1446,7 +1458,6 @@ function convertRGBToHSI(r, g, b){
 	document.getElementById("comp-h").textContent = "Hue: " + h;
 	document.getElementById("comp-s").textContent = "Saturation: " + s;
 	document.getElementById("comp-i").textContent = "Intensity: " + i;
-
 }
 
 function convertCMYToHSI(c, m, y){
@@ -1491,7 +1502,6 @@ function convertCMYToHSI(c, m, y){
 	document.getElementById("comp-h").textContent = "Hue: " + h;
 	document.getElementById("comp-s").textContent = "Saturation: " + s;
 	document.getElementById("comp-i").textContent = "Intensity: " + i;
-
 }
 
 function convertHSIToRGB(h, s, i){
@@ -1557,7 +1567,6 @@ function convertHSIToRGB(h, s, i){
 	document.getElementById("comp-b").textContent = "Blue: " + b;
 
 	document.getElementById("color").style.backgroundColor = "rgb(" + r + ", " + g + ", " + b + ")";
-
 }
 
 function convertHSIToCMY(h, s, i){
@@ -1621,6 +1630,267 @@ function convertHSIToCMY(h, s, i){
 	document.getElementById("comp-c").textContent = "Cyan: " + c;
 	document.getElementById("comp-m").textContent = "Magenta: " + m;
 	document.getElementById("comp-y").textContent = "Yellow: " + y;
+}
+
+function sepia(){
+
+	var x = [];
+
+	var imageMatrix = JSON.parse(JSON.stringify(originalImageMatrix));
+
+	for(var linha = 0; linha < imageHeight; linha++){
+		for (var coluna = 0; coluna < imageWidth; coluna++){
+			var pixel = imageMatrix[linha][coluna];
+
+			var tr = (0.393 * pixel.r) + (0.769 * pixel.g) + (0.189 * pixel.b);
+			var tg = (0.349 * pixel.r) + (0.686 * pixel.g) + (0.168 * pixel.b);
+			var tb = (0.272 * pixel.r) + (0.534 * pixel.g) + (0.131 * pixel.b);
+
+			tr = Math.round(tr);
+			tg = Math.round(tg);
+			tb = Math.round(tb);
+
+			if (tr > 255){
+				pixel.r = 255;
+			} else {
+				pixel.r = tr;
+			}
+			if (tg > 255){
+				pixel.g = 255;
+			} else {
+				pixel.g = tg;
+			}
+			if (tb > 255){
+				pixel.b = 255;
+			} else {
+				pixel.b = tb;
+			}
+
+			x.push(pixel.r);
+		}
+	}
+
+	var trace = {
+		x: x,
+		type: 'histogram',
+	};
+	var data = [trace];
+	Plotly.newPlot('histograma', data);
+
+	var sepiaImage = matrixToImage(imageMatrix, imageWidth, imageHeight);
+	ctx.putImageData(sepiaImage, 0, 0);
+}
+
+function upBrightness(){
+
+	var x = [];
 
 
+	for(var linha = 0; linha < imageHeight; linha++){
+		for (var coluna = 0; coluna < imageWidth; coluna++){
+			var pixel = imageCanvas[linha][coluna];
+
+			var rTemp = pixel.r + 25;
+			var gTemp = pixel.g + 25;
+			var bTemp = pixel.b + 25;
+
+			pixel.r = rTemp;
+			pixel.g = gTemp;
+			pixel.b = bTemp;
+
+			/*
+
+			if (rTemp >= 0 && rTemp <= 255){
+				pixel.r = rTemp;
+			}
+			if (gTemp >= 0 && gTemp <= 255){
+				pixel.g = gTemp;
+			}
+			if (bTemp >= 0 && bTemp <= 255){
+				pixel.b = bTemp;
+			} */
+
+			x.push(pixel.r);
+		}
+	}
+
+	var trace = {
+		x: x,
+		type: 'histogram',
+	};
+	var data = [trace];
+	Plotly.newPlot('histograma', data);
+
+	var upBrightImage = matrixToImage(imageCanvas, imageWidth, imageHeight);
+	ctx.putImageData(upBrightImage, 0, 0);
+}
+
+function downBrightness(){
+
+	var x = [];
+
+
+	for(var linha = 0; linha < imageHeight; linha++){
+		for (var coluna = 0; coluna < imageWidth; coluna++){
+			var pixel = imageCanvas[linha][coluna];
+
+			var rTemp = pixel.r - 25;
+			var gTemp = pixel.g - 25;
+			var bTemp = pixel.b - 25;
+
+			pixel.r = rTemp;
+			pixel.g = gTemp;
+			pixel.b = bTemp;
+
+			/*
+
+			if (rTemp >= 0 && rTemp <= 255){
+				pixel.r = rTemp;
+			}
+			if (gTemp >= 0 && gTemp <= 255){
+				pixel.g = gTemp;
+			}
+			if (bTemp >= 0 && bTemp <= 255){
+				pixel.b = bTemp;
+			}
+
+			*/
+
+			x.push(pixel.r);
+		}
+	}
+
+	var trace = {
+		x: x,
+		type: 'histogram',
+	};
+	var data = [trace];
+	Plotly.newPlot('histograma', data);
+
+	var downBrightImage = matrixToImage(imageCanvas, imageWidth, imageHeight);
+	ctx.putImageData(downBrightImage, 0, 0);
+}
+
+function resetImage(){
+
+	for(var linha = 0; linha < imageHeight; linha++){
+		for (var coluna = 0; coluna < imageWidth; coluna++){
+			var pixel = imageCanvas[linha][coluna];
+			var pixel2 = originalImageMatrix[linha][coluna];
+
+			pixel.r = pixel2.r;
+			pixel.g = pixel2.g;
+			pixel.b = pixel2.b;
+
+			imageCanvas[linha][coluna] = pixel;
+		}
+	}
+
+	var resetImage = matrixToImage(imageCanvas, imageWidth, imageHeight);
+	ctx.putImageData(resetImage, 0, 0);
+}
+
+function reduceGreen(image){
+	for(var linha = 0; linha < imageHeight; linha++){
+		for (var coluna = 0; coluna < imageWidth; coluna++){
+			var pixel = image[linha][coluna];
+
+			var rNorm = pixel.r / 255;
+			var gNorm = pixel.g / 255;
+			var bNorm = pixel.b / 255;
+
+			var cMax = Math.max(rNorm, gNorm, bNorm);
+			var cMin = Math.min(rNorm, gNorm, bNorm);
+			var delta = cMax - cMin;
+
+			if (delta == 0){
+				var h = 0;
+			} else if (cMax == rNorm){
+				var h = 60 * (((gNorm - bNorm)/delta) % 6);
+			} else if (cMax == gNorm){
+				var h = 60 * ((bNorm - rNorm)/delta + 2);
+			} else if (cMax == bNorm){
+				var h = 60 * ((rNorm - gNorm)/delta + 4);
+			}
+
+			if (cMax == 0){
+				var s = 0;
+			} else {
+				var s = delta/cMax;
+			}
+
+			var v = cMax;
+
+			if (h >= 60 && h <= 130 && s >= 0.15 && v >= 0.15){
+				if((pixel.r * pixel.b) != 0 && (pixel.g * pixel.g) / (pixel.r * pixel.b) > 1.5){
+					pixel.r *= 1.4;
+					pixel.b *= 1.4;
+				} else{
+					pixel.r *= 1.2;
+					pixel.b *= 1.2;
+				}
+			}
+		}
+	}
+
+	return image;
+}
+
+function chromaKey(){
+
+	var x = [];
+
+	var imageMatrix = JSON.parse(JSON.stringify(originalImageMatrix));
+
+	for(var linha = 0; linha < imageHeight; linha++){
+		for (var coluna = 0; coluna < imageWidth; coluna++){
+			var pixel = imageMatrix[linha][coluna];
+
+			var rNorm = pixel.r / 255;
+			var gNorm = pixel.g / 255;
+			var bNorm = pixel.b / 255;
+
+			var cMax = Math.max(rNorm, gNorm, bNorm);
+			var cMin = Math.min(rNorm, gNorm, bNorm);
+			var delta = cMax - cMin;
+
+			if (delta == 0){
+				var h = 0;
+			} else if (cMax == rNorm){
+				var h = 60 * (((gNorm - bNorm)/delta) % 6);
+			} else if (cMax == gNorm){
+				var h = 60 * ((bNorm - rNorm)/delta + 2);
+			} else if (cMax == bNorm){
+				var h = 60 * ((rNorm - gNorm)/delta + 4);
+			}
+
+			if (cMax == 0){
+				var s = 0;
+			} else {
+				var s = delta/cMax;
+			}
+
+			var v = cMax;
+
+			if (h >= 60 && h <= 130 && s >= 0.4 && v >= 0.3){
+				pixel.r = 0;
+				pixel.g = 0;
+				pixel.b = 255;
+			}
+
+			x.push(pixel.r);
+		}
+	}
+
+	imageMatrix = reduceGreen(imageMatrix);
+
+	var trace = {
+		x: x,
+		type: 'histogram',
+	};
+	var data = [trace];
+	Plotly.newPlot('histograma', data);
+
+	var chromaImage = matrixToImage(imageMatrix, imageWidth, imageHeight);
+	ctx.putImageData(chromaImage, 0, 0);
 }
