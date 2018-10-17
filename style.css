@@ -3,6 +3,11 @@
     border-radius: 8px;
 }
 
+#myCanvas2 {
+    border: 5px solid black;
+    border-radius: 8px;
+}
+
 #myImage {
 	width: 600px;
 	height: 400px;

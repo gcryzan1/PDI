@@ -6,8 +6,8 @@ var imageHeight;
 var originalImageMatrix;
 var imageCanvas;
 
-//var c2 = document.getElementById("myCanvas2");
-//var ctx2 = c2.getContext("2d");
+var c2 = document.getElementById("myCanvas2");
+var ctx2 = c2.getContext("2d");
 
 // função para mostrar a imagem selecionada do computador inicialmente sem filtros
 function showImage(input){
@@ -38,6 +38,44 @@ function showImageOnCanvas(image){
 	c.width = imageWidth;
 	c.height = imageHeight;
 	ctx.drawImage(image, 0, 0, imageWidth, imageHeight);
+
+	// extraindo os dados dos pixels que estão dentro do canvas
+	var imageData = ctx.getImageData(0, 0, imageWidth, imageHeight);
+
+	// transformando os dados extraídos do canvas e colocando numa variável global que representa a matriz da imagem original
+	originalImageMatrix = imageToMatrix(imageData, imageWidth, imageHeight);
+	imageCanvas = imageToMatrix(imageData, imageWidth, imageHeight);
+
+	// criada uma variável x que servirá para mostrar o histograma da imagem carregada
+	var x = [];
+
+	for(var linha = 0; linha < imageHeight; linha++){
+		for (var coluna = 0; coluna < imageWidth; coluna++){
+			var pixel = imageCanvas[linha][coluna];
+
+			x.push(pixel.r);
+		}
+	}
+
+	var trace = {
+		x: x,
+		type: 'histogram',
+	};
+	var data = [trace];
+	Plotly.newPlot('histograma', data);
+}
+
+function showImageOnCanvas2(image){
+
+	// pega o estilo da imagem para resgatar o valor da altura e largura
+	var imageStyle = getComputedStyle(image);
+	imageWidth = imageStyle.width.slice(0, -2);
+	imageHeight = imageStyle.height.slice(0, -2);
+
+	// coloca a largura e altura do canvas para ser a mesma da imagem e depois desenha
+	c2.width = imageWidth;
+	c2.height = imageHeight;
+	ctx2.drawImage(image, 0, 0, imageWidth, imageHeight);
 
 	// extraindo os dados dos pixels que estão dentro do canvas
 	var imageData = ctx.getImageData(0, 0, imageWidth, imageHeight);
