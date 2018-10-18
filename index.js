@@ -3,11 +3,14 @@ var c = document.getElementById("myCanvas");
 var ctx = c.getContext("2d");
 var imageWidth;
 var imageHeight;
+var imageWidth2;
+var imageHeight2;
 var originalImageMatrix;
+var originalImageMatrix2;
 var imageCanvas;
 
-var c2 = document.getElementById("myCanvas2");
-var ctx2 = c2.getContext("2d");
+//var c2 = document.getElementById("myCanvas2");
+//var ctx2 = c2.getContext("2d");
 
 // função para mostrar a imagem selecionada do computador inicialmente sem filtros
 function showImage(input){
@@ -20,6 +23,22 @@ function showImage(input){
 		};
 		reader.onloadend = function(e){
 			showImageOnCanvas(image);
+		}
+
+		reader.readAsDataURL(input.files[0]);
+	}
+}
+
+function showImage2(input){
+	var image = document.getElementById("myImage2");
+
+	if (input.files && input.files[0]){
+		var reader = new FileReader();
+		reader.onload = function(e){
+			image.src = e.target.result;
+		};
+		reader.onloadend = function(e){
+			showImageOnCanvas2(image);
 		}
 
 		reader.readAsDataURL(input.files[0]);
@@ -69,22 +88,23 @@ function showImageOnCanvas2(image){
 
 	// pega o estilo da imagem para resgatar o valor da altura e largura
 	var imageStyle = getComputedStyle(image);
-	imageWidth = imageStyle.width.slice(0, -2);
-	imageHeight = imageStyle.height.slice(0, -2);
+	imageWidth2 = imageStyle.width.slice(0, -2);
+	imageHeight2 = imageStyle.height.slice(0, -2);
 
 	// coloca a largura e altura do canvas para ser a mesma da imagem e depois desenha
-	c2.width = imageWidth;
-	c2.height = imageHeight;
-	ctx2.drawImage(image, 0, 0, imageWidth, imageHeight);
+	c.width = imageWidth2;
+	c.height = imageHeight2;
+	ctx.drawImage(image, 0, 0, imageWidth2, imageHeight2);
 
 	// extraindo os dados dos pixels que estão dentro do canvas
-	var imageData = ctx.getImageData(0, 0, imageWidth, imageHeight);
+	var imageData = ctx.getImageData(0, 0, imageWidth2, imageHeight2);
 
 	// transformando os dados extraídos do canvas e colocando numa variável global que representa a matriz da imagem original
-	originalImageMatrix = imageToMatrix(imageData, imageWidth, imageHeight);
-	imageCanvas = imageToMatrix(imageData, imageWidth, imageHeight);
+	originalImageMatrix2 = imageToMatrix(imageData, imageWidth2, imageHeight2);
+	//imageCanvas = imageToMatrix(imageData, imageWidth, imageHeight);
 
 	// criada uma variável x que servirá para mostrar o histograma da imagem carregada
+	/*
 	var x = [];
 
 	for(var linha = 0; linha < imageHeight; linha++){
@@ -101,6 +121,7 @@ function showImageOnCanvas2(image){
 	};
 	var data = [trace];
 	Plotly.newPlot('histograma', data);
+	*/
 }
 
 // função que transforma o formato de dados original da imagem em uma matriz(array de arrays) de pixels
@@ -1883,6 +1904,7 @@ function chromaKey(){
 	for(var linha = 0; linha < imageHeight; linha++){
 		for (var coluna = 0; coluna < imageWidth; coluna++){
 			var pixel = imageMatrix[linha][coluna];
+			var pixel2 = originalImageMatrix2[linha][coluna];
 
 			var rNorm = pixel.r / 255;
 			var gNorm = pixel.g / 255;
@@ -1911,9 +1933,9 @@ function chromaKey(){
 			var v = cMax;
 
 			if (h >= 60 && h <= 130 && s >= 0.4 && v >= 0.3){
-				pixel.r = 0;
-				pixel.g = 0;
-				pixel.b = 255;
+				pixel.r = pixel2.r;
+				pixel.g = pixel2.g;
+				pixel.b = pixel2.b;
 			}
 
 			x.push(pixel.r);
@@ -1931,4 +1953,49 @@ function chromaKey(){
 
 	var chromaImage = matrixToImage(imageMatrix, imageWidth, imageHeight);
 	ctx.putImageData(chromaImage, 0, 0);
+}
+
+function subtractImage(){
+
+	var x = [];
+
+	var imageMatrix = JSON.parse(JSON.stringify(originalImageMatrix));
+	//var imageMatrix2 = JSON.parse(JSON.stringify(originalImageMatrix2));
+
+	for(var linha = 0; linha < imageHeight; linha++){
+		for (var coluna = 0; coluna < imageWidth; coluna++){
+			var pixel = imageMatrix[linha][coluna];
+			var pixel2 = originalImageMatrix2[linha][coluna];
+
+			var red = pixel.r - pixel2.r;
+			var green = pixel.g - pixel2.g;
+			var blue = pixel.b - pixel2.b;
+
+			red += 255;
+			green += 255;
+			blue += 255;
+
+			red /= 2;
+			green /= 2;
+			blue /= 2;
+
+			pixel.r = red;
+			pixel.g = green;
+			pixel.b = blue;
+
+			x.push(pixel.r);
+		}
+	}
+
+	
+
+	var trace = {
+		x: x,
+		type: 'histogram',
+	};
+	var data = [trace];
+	Plotly.newPlot('histograma', data);
+
+	var subImage = matrixToImage(imageMatrix, imageWidth, imageHeight);
+	ctx.putImageData(subImage, 0, 0);
 }
