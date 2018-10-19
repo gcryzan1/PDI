@@ -30,12 +30,31 @@
 				
 				<center><div class="col-xs-12">
 				
-				<h3>Original</h3>
-				
-				<img id="myImage" alt="Bonfire" src="https://i.imgur.com/2mHpuJQ.jpg"><br><br>
+				<div class="col-lg-12">
 
-				<input class="button" type="button" value="Subtrair imagens" onclick="subtractImage()" /><br>
+					<div class="col-lg-6">
+						
+						<h3>Imagem 1:</h3>
 				
+						<img id="myImage" alt="Bonfire" src="https://i.imgur.com/2mHpuJQ.jpg"><br><br>
+
+						<center><input class="pr2" type="file" id="imageFile" value="Selecione arquivo" onchange="showImage(this)"/></br><br><br><br></center>
+					
+					</div>
+
+
+					<div class="col-lg-6">
+					
+						<h3>Imagem 2:</h3>
+
+						<img id="myImage2" alt="image2" src="https://i.imgur.com/2mHpuJQ.jpg"><br><br>
+
+						<center><input class="pr2" type="file" id="imageFile2" value="Selecione arquivo" onchange="showImage2(this)"/></br><br><br><br></center>
+
+					</div>
+
+				</div><br><br>
+
 				<h3>Resultado do filtro</h3><br><br>
 				
 				<!--<form action="mudarResultado(this.value)">
@@ -79,15 +98,6 @@
 
 				</div>
 				
-				<center><input class="pr2" type="file" id="imageFile" value="Selecione arquivo" onchange="showImage(this)"/></br><br><br><br></center>
-
-				<h3>Imagem 2:</h3>
-
-				<img id="myImage2" alt="image2" src="https://i.imgur.com/2mHpuJQ.jpg"><br><br>
-
-				<center><input class="pr2" type="file" id="imageFile2" value="Selecione arquivo" onchange="showImage2(this)"/></br><br><br><br></center>
-				
-				
 				<p class="pr">Selecione um filtro:</p><br><br>
 				
 				<center><select class="selecao" size="5" onchange="mudarInput(this.value)">
@@ -112,6 +122,7 @@
 					<option value="filtroFrequencia">Frequência</option>
 					<option value="filtroChromaKey">Chroma Key</option>
 					<option value="filtroSepia">Sépia</option>
+					<option value="filtroSub">Subtrair Imagens</option>
 				</select><br><br></center>
 
 				
@@ -424,6 +435,12 @@
 
 				</div>
 
+				<div class="container" id="subtrair" style="display: none;">
+					
+					<input class="button" type="button" value="Subtrair imagens" onclick="subtractImage()" /><br>
+
+				</div>
+
 				<h3>Histograma</h3>
 				
 				<div id="histograma"></div><br><br><br>
@@ -523,7 +540,7 @@
 
 				<script type="text/javascript">
 					
-					var arrayId = ["negativo","equalizarImagem","logaritmo","binario","limiarizacao","linear","potencia","convolucao","media","mediana","mediaPonderada","mediaGeometrica","mediaHarmonica","maximo","minimo","pontoMedio","mediaContraHarmonica","frequencia","default", "chroma", "sepia"];
+					var arrayId = ["negativo","equalizarImagem","logaritmo","binario","limiarizacao","linear","potencia","convolucao","media","mediana","mediaPonderada","mediaGeometrica","mediaHarmonica","maximo","minimo","pontoMedio","mediaContraHarmonica","frequencia","default", "chroma", "sepia","subtrair"];
 
 					var arrayId2 = ["resultadoNormal","resultadoBrilho"];
 
@@ -593,6 +610,8 @@
 							mostrarDivParametro("chroma");
 						}else if (value == "filtroSepia") {
 							mostrarDivParametro("sepia");
+						}else if (value == "filtroSub") {
+							mostrarDivParametro("subtrair");
 						}
 					}
 
