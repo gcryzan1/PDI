@@ -4,3 +4,10 @@ function Pixel (r,g,b,a) {
 	this.b = b;
 	this.a = a;
 }
+
+function Quadrant(imageWidthBegin, imageWidthEnd, imageHeightBegin, imageHeightEnd) {
+	this.imageWidthBegin = imageWidthBegin; 
+	this.imageWidthEnd = imageWidthEnd;
+	this.imageHeightBegin = imageHeightBegin; 
+	this.imageHeightEnd = imageHeightEnd;
+}

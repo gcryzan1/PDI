@@ -1999,8 +1999,8 @@ function subtractImage(){
 	var data = [trace];
 	Plotly.newPlot('histograma', data);
 
-	var subImage = matrixToImage(imageMatrix, imageWidth, imageHeight);
-	ctx.putImageData(subImage, 0, 0);
+	var Quadrant = matrixToImage(imageMatrix, imageWidth, imageHeight);
+	ctx.putImageData(Quadrant, 0, 0);
 }
 
 // Loop da linha
@@ -2099,4 +2099,196 @@ function haarTransform (){
 
 }
 
+function energyHaar(imageMatrix,imageWidthBegin, imageWidthEnd, imageHeightBegin, imageHeightEnd){
 
+	var x = [];
+
+	var imageMatrixPrevious = JSON.parse(JSON.stringify(imageCanvas));
+	var imageMatrixCurrent = JSON.parse(JSON.stringify(imageCanvas));
+	var imageMatrixNew = JSON.parse(JSON.stringify(imageCanvas));
+
+	  for(var linha = imageHeightBegin; linha <= imageHeightEnd; linha++)
+	  {
+	    for(var coluna = imageWidthBegin ; coluna <= imageWidthEnd; coluna+=2)
+	    {
+	      var firstPixel = imageMatrixCurrent[linha][coluna];
+	      var secondPixel = imageMatrixCurrent[linha][coluna + 1];
+
+	      var escalaR = ( firstPixel.r + secondPixel.r ) / 2;
+	      var escalaG = ( firstPixel.g + secondPixel.g ) / 2;
+	      var escalaB = ( firstPixel.b + secondPixel.b ) / 2;
+
+	      var coefDetR = ( firstPixel.r - secondPixel.r ) / 2;
+	      var coefDetG = ( firstPixel.g - secondPixel.g ) / 2;
+	      var coefDetB = ( firstPixel.b - secondPixel.b ) / 2;
+
+	      var indexMediaCol = ((coluna - imageWidthBegin) / 2 ) + imageWidthBegin;
+      	  var indexSubCol = ((coluna - imageWidthBegin) / 2 ) + ( (imageWidthEnd - imageWidthBegin + 1) / 2 ) + imageWidthBegin;
+
+	      var currentPixelEscala = imageMatrixNew[linha][indexMediaCol];
+	      var currentPixelCoefDet = imageMatrixNew[linha][indexSubCol];
+
+	      currentPixelEscala.r = escalaR;
+	      currentPixelEscala.g = escalaG;
+	      currentPixelEscala.b = escalaB;
+
+	      currentPixelCoefDet.r = coefDetR;
+	      currentPixelCoefDet.g = coefDetG;
+	      currentPixelCoefDet.b = coefDetB;
+
+	    }
+	  }
+	
+
+	var imageMatrixCurrent = JSON.parse(JSON.stringify(imageMatrixNew));
+
+	for(var coluna = imageWidthBegin; coluna <= imageWidthEnd; coluna++)
+	  {
+	    for(var linha = imageHeightBegin; linha <= imageHeightEnd; linha+=2)
+	    {
+	      var firstPixel = imageMatrixCurrent[linha][coluna];
+	      var secondPixel = imageMatrixCurrent[linha + 1][coluna];
+
+	      var escalaR = ( firstPixel.r + secondPixel.r ) / 2;
+	      var escalaG = ( firstPixel.g + secondPixel.g ) / 2;
+	      var escalaB = ( firstPixel.b + secondPixel.b ) / 2;
+
+	      var coefDetR = ( firstPixel.r - secondPixel.r ) / 2;
+	      var coefDetG = ( firstPixel.g - secondPixel.g ) / 2;
+	      var coefDetB = ( firstPixel.b - secondPixel.b ) / 2;
+
+	      var indexMediaLine = ((linha - imageHeightBegin) / 2 ) + imageHeightBegin;
+      	  var indexSubLine = ((linha - imageHeightBegin) / 2 ) + ( (imageHeightEnd - imageHeightBegin + 1) / 2 ) + imageHeightBegin;
+
+
+	      var currentPixelEscala = imageMatrixNew[indexMediaLine][coluna];
+	      var currentPixelCoefDet = imageMatrixNew[indexSubLine][coluna];
+
+	      currentPixelEscala.r = escalaR;
+	      currentPixelEscala.g = escalaG;
+	      currentPixelEscala.b = escalaB;
+
+	      currentPixelCoefDet.r = coefDetR;
+	      currentPixelCoefDet.g = coefDetG;
+	      currentPixelCoefDet.b = coefDetB;
+
+	    }
+	  }
+
+	  return imageMatrixNew;
+
+}
+
+function energyIsBigger(imageMatrixPrevious, imageMatrixNew, imageWidthBegin, imageWidthEnd, imageHeightBegin, imageHeightEnd) {
+  var matrixPreviousEnergy = 0;
+  var matrixNewEnergy = 0;
+
+  // Calcula energia da matriz Previous
+  for(var linha = imageHeightBegin; linha <= imageHeightEnd; linha++)
+  {
+    for(var coluna = imageWidthBegin; coluna <= imageWidthEnd; coluna++)
+    {
+      var currentPixelPrevious = imageMatrixPrevious[linha][coluna];
+      var currentPixelNew = imageMatrixNew[linha][coluna];
+      
+      matrixPreviousEnergy += currentPixelPrevious.r + currentPixelPrevious.g + currentPixelPrevious.b;
+      matrixNewEnergy += currentPixelNew.r + currentPixelNew.g + currentPixelNew.b;
+    }
+  }
+
+  if(matrixNewEnergy < matrixPreviousEnergy)
+  {
+    return false;
+  }
+  else
+  {
+    return true;
+  }
+
+}
+
+function applyWaveletFilterMatrix() {
+
+  var x = [];
+
+  var subImagesArrayAtual = [];
+  var subImagesArrayNovo = [];
+
+  subImagesArrayAtual.push(new Quadrant(0, haarWidth - 1, 0, haarHeight - 1));
+
+  var imageMatrixPrevious = JSON.parse(JSON.stringify(imageCanvas));
+
+  var maxInteration = 2;
+  var currentInteration = 0;
+
+ 
+while(subImagesArrayAtual.length > 0 && currentInteration < maxInteration)
+  {
+
+    for(var i = 0; i < subImagesArrayAtual.length; i++)
+    {
+      var currentSubImage = subImagesArrayAtual[i];
+      var imageMatrixNew = energyHaar(imageMatrixPrevious, currentSubImage.imageWidthBegin, currentSubImage.imageWidthEnd, currentSubImage.imageHeightBegin, currentSubImage.imageHeightEnd);
+    
+      // Verifica se a energia New é menor que a Previous
+      if(!energyIsBigger(imageMatrixPrevious, imageMatrixNew, currentSubImage.imageWidthBegin, currentSubImage.imageWidthEnd, currentSubImage.imageHeightBegin, currentSubImage.imageHeightEnd))
+      {
+        // Subimagem do 1º quadrante
+        subImagesArrayNovo.push(new Quadrant(
+          currentSubImage.imageWidthBegin, 
+          ((currentSubImage.imageWidthEnd - currentSubImage.imageWidthBegin + 1) / 2) - 1,
+          currentSubImage.imageHeightBegin,
+          ((currentSubImage.imageHeightEnd - currentSubImage.imageHeightBegin + 1) / 2) - 1
+        ));
+
+        // Subimagem do 2º quadrante
+        subImagesArrayNovo.push(new Quadrant(
+          currentSubImage.imageWidthBegin, 
+          ((currentSubImage.imageWidthEnd - currentSubImage.imageWidthBegin + 1) / 2) - 1,
+          ((currentSubImage.imageHeightEnd - currentSubImage.imageHeightBegin + 1) / 2),
+          currentSubImage.imageHeightEnd
+        ));
+
+        // Subimagem do 3º quadrante
+        subImagesArrayNovo.push(new Quadrant(
+          ((currentSubImage.imageWidthEnd - currentSubImage.imageWidthBegin + 1) / 2), 
+          currentSubImage.imageWidthEnd,
+          ((currentSubImage.imageHeightEnd - currentSubImage.imageHeightBegin + 1) / 2),
+          currentSubImage.imageHeightEnd
+        ));
+
+        // Subimagem do 4º quadrante
+        subImagesArrayNovo.push(new Quadrant(
+          ((currentSubImage.imageWidthEnd - currentSubImage.imageWidthBegin + 1) / 2), 
+          currentSubImage.imageWidthEnd,
+          currentSubImage.imageHeightBegin,
+          ((currentSubImage.imageHeightEnd - currentSubImage.imageHeightBegin + 1) / 2) - 1
+        ));
+
+        var imageMatrixPrevious = JSON.parse(JSON.stringify(imageMatrixNew));
+      }
+
+    }
+
+    subImagesArrayAtual = JSON.parse(JSON.stringify(subImagesArrayNovo));
+    subImagesArrayNovo = [];
+
+    currentInteration++;
+  }
+
+  var imageMatrixNew = JSON.parse(JSON.stringify(imageMatrixPrevious));
+
+  imageCanvas = JSON.parse(JSON.stringify(imageMatrixNew));
+
+	var haarImage = matrixToImage(imageCanvas, imageWidth, imageHeight);
+	ctx.putImageData(haarImage, 0, 0);
+
+
+	var trace = {
+		x: x,
+		type: 'histogram',
+	};
+	var data = [trace];
+	Plotly.newPlot('histograma', data);
+
+}

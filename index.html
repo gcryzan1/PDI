@@ -125,7 +125,8 @@
 					<option value="filtroChromaKey">Chroma Key</option>
 					<option value="filtroSepia">Sépia</option>
 					<option value="filtroSub">Subtrair Imagens</option>
-					<option value="TransformadaHaar">Transformada de Haar</option>
+					<option value="TransformadaHaar">Transformada de Haar normal</option>
+					<option value="TransformadaHaarEnergy">Transformada de Haar energia</option>
 				</select><br><br></center>
 
 				
@@ -450,6 +451,12 @@
 
 				</div>
 
+				<div class="container" id="HaarEnergy" style="display: none;">
+					
+					<input class="button" type="button" value="Transformada de Haar com energia" onclick="applyWaveletFilterMatrix()" /><br>
+
+				</div>
+
 				<h3>Histograma</h3>
 				
 				<div id="histograma"></div><br><br><br>
@@ -549,7 +556,7 @@
 
 				<script type="text/javascript">
 					
-					var arrayId = ["negativo","equalizarImagem","logaritmo","binario","limiarizacao","linear","potencia","convolucao","media","mediana","mediaPonderada","mediaGeometrica","mediaHarmonica","maximo","minimo","pontoMedio","mediaContraHarmonica","frequencia","default", "chroma", "sepia","subtrair","Haar"];
+					var arrayId = ["negativo","equalizarImagem","logaritmo","binario","limiarizacao","linear","potencia","convolucao","media","mediana","mediaPonderada","mediaGeometrica","mediaHarmonica","maximo","minimo","pontoMedio","mediaContraHarmonica","frequencia","default", "chroma", "sepia","subtrair","Haar","HaarEnergy"];
 
 					var arrayId2 = ["resultadoNormal","resultadoBrilho"];
 
@@ -623,6 +630,8 @@
 							mostrarDivParametro("subtrair");
 						}else if (value == "TransformadaHaar") {
 							mostrarDivParametro("Haar");
+						}else if (value == "TransformadaHaarEnergy") {
+							mostrarDivParametro("HaarEnergy");
 						}
 					}
 
