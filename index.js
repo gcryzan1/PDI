@@ -8,6 +8,8 @@ var imageHeight2;
 var originalImageMatrix;
 var originalImageMatrix2;
 var imageCanvas;
+var haarHeight = 512;
+var haarWidth = 512;
 
 //var c2 = document.getElementById("myCanvas2");
 //var ctx2 = c2.getContext("2d");
@@ -2005,13 +2007,13 @@ function haarTransform (){
 
 	var x = [];
 
-	var imageMatrixPrevious = JSON.parse(JSON.stringify(originalImageMatrix));
-	var imageMatrixCurrent = JSON.parse(JSON.stringify(originalImageMatrix));
-	var imageMatrixNew = JSON.parse(JSON.stringify(originalImageMatrix));
+	var imageMatrixPrevious = JSON.parse(JSON.stringify(imageCanvas));
+	var imageMatrixCurrent = JSON.parse(JSON.stringify(imageCanvas));
+	var imageMatrixNew = JSON.parse(JSON.stringify(imageCanvas));
 
-	  for(var linha = 0; linha < imageHeight; linha++)
+	  for(var linha = 0; linha < haarHeight; linha++)
 	  {
-	    for(var coluna = 0; coluna < imageWidth; coluna+=2)
+	    for(var coluna = 0; coluna < haarWidth; coluna+=2)
 	    {
 	      var firstPixel = imageMatrixCurrent[linha][coluna];
 	      var secondPixel = imageMatrixCurrent[linha][coluna + 1];
@@ -2025,7 +2027,7 @@ function haarTransform (){
 	      var coefDetB = ( firstPixel.b - secondPixel.b ) / 2;
 
 	      var indexMediaCol = coluna / 2;
-	      var indexSubCol = ( coluna / 2 ) + ( imageWidth / 2 );
+	      var indexSubCol = ( coluna / 2 ) + ( haarWidth / 2 );
 
 	      var currentPixelEscala = imageMatrixNew[linha][indexMediaCol];
 	      var currentPixelCoefDet = imageMatrixNew[linha][indexSubCol];
@@ -2044,9 +2046,9 @@ function haarTransform (){
 
 	var imageMatrixCurrent = JSON.parse(JSON.stringify(imageMatrixNew));
 
-	for(var coluna = 0; coluna < imageWidth; coluna++)
+	for(var coluna = 0; coluna < haarWidth; coluna++)
 	  {
-	    for(var linha = 0; linha < imageHeight; linha+=2)
+	    for(var linha = 0; linha < haarHeight; linha+=2)
 	    {
 	      var firstPixel = imageMatrixCurrent[linha][coluna];
 	      var secondPixel = imageMatrixCurrent[linha + 1][coluna];
@@ -2060,7 +2062,7 @@ function haarTransform (){
 	      var coefDetB = ( firstPixel.b - secondPixel.b ) / 2;
 
 	      var indexMediaLine = linha / 2;
-	      var indexSubLine = ( linha / 2 ) + ( imageHeight / 2 );
+	      var indexSubLine = ( linha / 2 ) + ( haarHeight / 2 );
 
 	      var currentPixelEscala = imageMatrixNew[indexMediaLine][coluna];
 	      var currentPixelCoefDet = imageMatrixNew[indexSubLine][coluna];
@@ -2076,8 +2078,15 @@ function haarTransform (){
 	    }
 	  }
 
+	
+	imageCanvas = JSON.parse(JSON.stringify(imageMatrixNew));
+
 	var haarImage = matrixToImage(imageMatrixNew, imageWidth, imageHeight);
 	ctx.putImageData(haarImage, 0, 0);
+
+ 	haarHeight = haarHeight/2;
+	haarWidth = haarWidth/2;
+
 
 	var trace = {
 		x: x,
