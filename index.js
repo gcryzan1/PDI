@@ -1999,3 +1999,94 @@ function subtractImage(){
 	var subImage = matrixToImage(imageMatrix, imageWidth, imageHeight);
 	ctx.putImageData(subImage, 0, 0);
 }
+
+// Loop da linha
+function haarTransform (){
+
+	var x = [];
+
+	var imageMatrixPrevious = JSON.parse(JSON.stringify(originalImageMatrix));
+	var imageMatrixCurrent = JSON.parse(JSON.stringify(originalImageMatrix));
+	var imageMatrixNew = JSON.parse(JSON.stringify(originalImageMatrix));
+
+	  for(var linha = 0; linha < imageHeight; linha++)
+	  {
+	    for(var coluna = 0; coluna < imageWidth; coluna+=2)
+	    {
+	      var firstPixel = imageMatrixCurrent[linha][coluna];
+	      var secondPixel = imageMatrixCurrent[linha][coluna + 1];
+
+	      var escalaR = ( firstPixel.r + secondPixel.r ) / 2;
+	      var escalaG = ( firstPixel.g + secondPixel.g ) / 2;
+	      var escalaB = ( firstPixel.b + secondPixel.b ) / 2;
+
+	      var coefDetR = ( firstPixel.r - secondPixel.r ) / 2;
+	      var coefDetG = ( firstPixel.g - secondPixel.g ) / 2;
+	      var coefDetB = ( firstPixel.b - secondPixel.b ) / 2;
+
+	      var indexMediaCol = coluna / 2;
+	      var indexSubCol = ( coluna / 2 ) + ( imageWidth / 2 );
+
+	      var currentPixelEscala = imageMatrixNew[linha][indexMediaCol];
+	      var currentPixelCoefDet = imageMatrixNew[linha][indexSubCol];
+
+	      currentPixelEscala.r = escalaR;
+	      currentPixelEscala.g = escalaG;
+	      currentPixelEscala.b = escalaB;
+
+	      currentPixelCoefDet.r = coefDetR;
+	      currentPixelCoefDet.g = coefDetG;
+	      currentPixelCoefDet.b = coefDetB;
+
+	    }
+	  }
+	
+
+	var imageMatrixCurrent = JSON.parse(JSON.stringify(imageMatrixNew));
+
+	for(var coluna = 0; coluna < imageWidth; coluna++)
+	  {
+	    for(var linha = 0; linha < imageHeight; linha+=2)
+	    {
+	      var firstPixel = imageMatrixCurrent[linha][coluna];
+	      var secondPixel = imageMatrixCurrent[linha + 1][coluna];
+
+	      var escalaR = ( firstPixel.r + secondPixel.r ) / 2;
+	      var escalaG = ( firstPixel.g + secondPixel.g ) / 2;
+	      var escalaB = ( firstPixel.b + secondPixel.b ) / 2;
+
+	      var coefDetR = ( firstPixel.r - secondPixel.r ) / 2;
+	      var coefDetG = ( firstPixel.g - secondPixel.g ) / 2;
+	      var coefDetB = ( firstPixel.b - secondPixel.b ) / 2;
+
+	      var indexMediaLine = linha / 2;
+	      var indexSubLine = ( linha / 2 ) + ( imageHeight / 2 );
+
+	      var currentPixelEscala = imageMatrixNew[indexMediaLine][coluna];
+	      var currentPixelCoefDet = imageMatrixNew[indexSubLine][coluna];
+
+	      currentPixelEscala.r = escalaR;
+	      currentPixelEscala.g = escalaG;
+	      currentPixelEscala.b = escalaB;
+
+	      currentPixelCoefDet.r = coefDetR;
+	      currentPixelCoefDet.g = coefDetG;
+	      currentPixelCoefDet.b = coefDetB;
+
+	    }
+	  }
+
+	var haarImage = matrixToImage(imageMatrixNew, imageWidth, imageHeight);
+	ctx.putImageData(haarImage, 0, 0);
+
+	var trace = {
+		x: x,
+		type: 'histogram',
+	};
+	var data = [trace];
+	Plotly.newPlot('histograma', data);
+
+
+}
+
+

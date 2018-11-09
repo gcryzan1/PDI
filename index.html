@@ -5,6 +5,8 @@
 	<!-- Latest compiled and minified CSS -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
 
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+
     <!-- Latest compiled and minified JavaScript -->
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
 
@@ -83,7 +85,7 @@
 				
 					<div class="col-lg-8">				
 
-						<canvas id="myCanvas" width="600" height="400"></canvas><br><br>
+						<canvas id="myCanvas" width="512" height="512"></canvas><br><br>
 					
 					</div>
 
@@ -123,6 +125,7 @@
 					<option value="filtroChromaKey">Chroma Key</option>
 					<option value="filtroSepia">Sépia</option>
 					<option value="filtroSub">Subtrair Imagens</option>
+					<option value="TransformadaHaar">Transformada de Haar</option>
 				</select><br><br></center>
 
 				
@@ -441,6 +444,12 @@
 
 				</div>
 
+				<div class="container" id="Haar" style="display: none;">
+					
+					<input class="button" type="button" value="Transformada de Haar" onclick="haarTransform()" /><br>
+
+				</div>
+
 				<h3>Histograma</h3>
 				
 				<div id="histograma"></div><br><br><br>
@@ -540,7 +549,7 @@
 
 				<script type="text/javascript">
 					
-					var arrayId = ["negativo","equalizarImagem","logaritmo","binario","limiarizacao","linear","potencia","convolucao","media","mediana","mediaPonderada","mediaGeometrica","mediaHarmonica","maximo","minimo","pontoMedio","mediaContraHarmonica","frequencia","default", "chroma", "sepia","subtrair"];
+					var arrayId = ["negativo","equalizarImagem","logaritmo","binario","limiarizacao","linear","potencia","convolucao","media","mediana","mediaPonderada","mediaGeometrica","mediaHarmonica","maximo","minimo","pontoMedio","mediaContraHarmonica","frequencia","default", "chroma", "sepia","subtrair","Haar"];
 
 					var arrayId2 = ["resultadoNormal","resultadoBrilho"];
 
@@ -612,6 +621,8 @@
 							mostrarDivParametro("sepia");
 						}else if (value == "filtroSub") {
 							mostrarDivParametro("subtrair");
+						}else if (value == "TransformadaHaar") {
+							mostrarDivParametro("Haar");
 						}
 					}
 
