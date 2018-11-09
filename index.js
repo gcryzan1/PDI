@@ -64,9 +64,10 @@ function showImageOnCanvas(image){
 	var imageData = ctx.getImageData(0, 0, imageWidth, imageHeight);
 
 	// transformando os dados extraídos do canvas e colocando numa variável global que representa a matriz da imagem original
-	originalImageMatrix = imageToMatrix(imageData, imageWidth, imageHeight);
+	
 	imageCanvas = imageToMatrix(imageData, imageWidth, imageHeight);
-
+	originalImageMatrix = imageToMatrix(imageData, imageWidth, imageHeight);
+	
 	// criada uma variável x que servirá para mostrar o histograma da imagem carregada
 	var x = [];
 
