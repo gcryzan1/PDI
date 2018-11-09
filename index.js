@@ -2103,9 +2103,9 @@ function energyHaar(imageMatrix,imageWidthBegin, imageWidthEnd, imageHeightBegin
 
 	var x = [];
 
-	var imageMatrixPrevious = JSON.parse(JSON.stringify(imageCanvas));
-	var imageMatrixCurrent = JSON.parse(JSON.stringify(imageCanvas));
-	var imageMatrixNew = JSON.parse(JSON.stringify(imageCanvas));
+	var imageMatrixPrevious = JSON.parse(JSON.stringify(imageMatrix));
+	var imageMatrixCurrent = JSON.parse(JSON.stringify(imageMatrix));
+	var imageMatrixNew = JSON.parse(JSON.stringify(imageMatrix));
 
 	  for(var linha = imageHeightBegin; linha <= imageHeightEnd; linha++)
 	  {
@@ -2216,7 +2216,7 @@ function applyWaveletFilterMatrix() {
 
   subImagesArrayAtual.push(new Quadrant(0, haarWidth - 1, 0, haarHeight - 1));
 
-  var imageMatrixPrevious = JSON.parse(JSON.stringify(imageCanvas));
+  var imageMatrixPrevious = JSON.parse(JSON.stringify(originalImageMatrix));
 
   var maxInteration = 2;
   var currentInteration = 0;
@@ -2278,10 +2278,8 @@ while(subImagesArrayAtual.length > 0 && currentInteration < maxInteration)
 
   var imageMatrixNew = JSON.parse(JSON.stringify(imageMatrixPrevious));
 
-  imageCanvas = JSON.parse(JSON.stringify(imageMatrixNew));
-
-	var haarImage = matrixToImage(imageCanvas, imageWidth, imageHeight);
-	ctx.putImageData(haarImage, 0, 0);
+  var haarImage = matrixToImage(imageMatrixNew, imageWidth, imageHeight);
+  ctx.putImageData(haarImage, 0, 0);
 
 
 	var trace = {
