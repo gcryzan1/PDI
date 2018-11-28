@@ -2003,8 +2003,7 @@ function subtractImage(){
 	ctx.putImageData(Quadrant, 0, 0);
 }
 
-// Loop da linha
-function haarTransform (){
+function haarTransform(){
 
 	var x = [];
 
@@ -2095,8 +2094,6 @@ function haarTransform (){
 	};
 	var data = [trace];
 	Plotly.newPlot('histograma', data);
-
-
 }
 
 function energyHaar(imageMatrix,imageWidthBegin, imageWidthEnd, imageHeightBegin, imageHeightEnd){
@@ -2176,7 +2173,6 @@ function energyHaar(imageMatrix,imageWidthBegin, imageWidthEnd, imageHeightBegin
 	  }
 
 	  return imageMatrixNew;
-
 }
 
 function energyIsBigger(imageMatrixPrevious, imageMatrixNew, imageWidthBegin, imageWidthEnd, imageHeightBegin, imageHeightEnd) {
@@ -2204,7 +2200,6 @@ function energyIsBigger(imageMatrixPrevious, imageMatrixNew, imageWidthBegin, im
   {
     return true;
   }
-
 }
 
 function applyWaveletFilterMatrix() {
@@ -2289,4 +2284,103 @@ while(subImagesArrayAtual.length > 0 && currentInteration < maxInteration)
 	var data = [trace];
 	Plotly.newPlot('histograma', data);
 
+}
+
+function applyWavelet(){
+	haarTransform();
+	haarTransform();
+	haarTransform();
+	haarTransform();
+	haarTransform();
+	haarTransform();
+	haarTransform();
+	haarTransform();
+	haarTransform();
+	console.log(haarWidth);
+	console.log(haarHeight);
+}
+
+function haarInverse(){
+
+	var x = [];
+
+	var imageMatrixCurrent = JSON.parse(JSON.stringify(imageCanvas));
+	var imageMatrixNew = JSON.parse(JSON.stringify(imageCanvas));
+
+	for(var linha = 0; linha < haarHeight*2; linha++){
+	  	var atual = 0;
+	    for(var coluna = 0; coluna < haarWidth; coluna++){
+	    	var pixel = imageMatrixCurrent[linha][coluna];
+	    	var pixel2 = imageMatrixCurrent[linha][coluna+haarWidth];
+
+	    	var somaR = pixel.r + pixel2.r;
+	    	var subR = pixel.r - pixel2.r;
+	    	var somaG = pixel.g + pixel2.g;
+	    	var subG = pixel.g - pixel2.g;
+	    	var somaB = pixel.b + pixel2.b;
+	    	var subB = pixel.b - pixel2.b;
+
+	    	var pixelFinal1 = imageMatrixNew[linha][atual];
+	    	var pixelFinal2 = imageMatrixNew[linha][atual+1];
+
+	    	pixelFinal1.r = somaR;
+	    	pixelFinal1.g = somaG;
+	    	pixelFinal1.b = somaB;
+	    	pixelFinal2.r = subR;
+	    	pixelFinal2.g = subG;
+	    	pixelFinal2.b = subB;
+
+	    	atual += 2;
+	    }
+	}
+	
+	
+	var imageMatrixCurrent = JSON.parse(JSON.stringify(imageMatrixNew));
+
+	for(var coluna = 0; coluna < haarWidth*2; coluna++){
+	  	var atual = 0;
+	    for(var linha = 0; linha < haarHeight; linha++){
+	    	var pixel = imageMatrixCurrent[linha][coluna];
+	    	var pixel2 = imageMatrixCurrent[linha+haarHeight][coluna];
+
+	    	var somaR = pixel.r + pixel2.r;
+	    	var subR = pixel.r - pixel2.r;
+	    	var somaG = pixel.g + pixel2.g;
+	    	var subG = pixel.g - pixel2.g;
+	    	var somaB = pixel.b + pixel2.b;
+	    	var subB = pixel.b - pixel2.b;
+
+	    	var pixelFinal1 = imageMatrixNew[atual][coluna];
+	    	var pixelFinal2 = imageMatrixNew[atual+1][coluna];
+
+	    	pixelFinal1.r = somaR;
+	    	pixelFinal1.g = somaG;
+	    	pixelFinal1.b = somaB;
+	    	pixelFinal2.r = subR;
+	    	pixelFinal2.g = subG;
+	    	pixelFinal2.b = subB;
+
+	    	atual += 2;
+	    }
+	}
+	
+	
+	imageCanvas = JSON.parse(JSON.stringify(imageMatrixNew));
+
+	var haarImage = matrixToImage(imageMatrixNew, imageWidth, imageHeight);
+	ctx.putImageData(haarImage, 0, 0);
+
+ 	haarHeight = haarHeight*2;
+	haarWidth = haarWidth*2;
+
+	console.log(haarWidth);
+	console.log(haarHeight);
+
+
+	var trace = {
+		x: x,
+		type: 'histogram',
+	};
+	var data = [trace];
+	Plotly.newPlot('histograma', data);
 }
