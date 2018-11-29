@@ -2007,7 +2007,7 @@ function haarTransform(){
 
 	var x = [];
 
-	var imageMatrixPrevious = JSON.parse(JSON.stringify(imageCanvas));
+	//var imageMatrixPrevious = JSON.parse(JSON.stringify(imageCanvas));
 	var imageMatrixCurrent = JSON.parse(JSON.stringify(imageCanvas));
 	var imageMatrixNew = JSON.parse(JSON.stringify(imageCanvas));
 
@@ -2298,6 +2298,8 @@ function applyWavelet(){
 	haarTransform();
 	console.log(haarWidth);
 	console.log(haarHeight);
+	rounding();
+	countingIntensity();
 }
 
 function haarInverse(){
@@ -2383,4 +2385,66 @@ function haarInverse(){
 	};
 	var data = [trace];
 	Plotly.newPlot('histograma', data);
+}
+
+function rounding (){
+	
+    for(var linha = 0; linha < imageHeight; linha++){
+    
+    	for(var coluna = 0; coluna < imageWidth; coluna++){
+        	var currentPixel = imageCanvas[linha][coluna];
+
+      		currentPixel.r = Math.round(currentPixel.r);//Math.max( Math.round(currentPixel.r) , 0 );
+      		currentPixel.g = Math.round(currentPixel.g);//Math.max( Math.round(currentPixel.g) , 0 );;
+      		currentPixel.b = Math.round(currentPixel.b);//Math.max( Math.round(currentPixel.b) , 0 );;
+
+    }
+  }
+}
+
+function countingIntensity (){
+	var imageMatrix = JSON.parse(JSON.stringify(imageCanvas));
+
+    var numOccurrency = [];
+
+    for(var linha = 0; linha < imageHeight; linha++)
+  {
+    for(var coluna = 0; coluna < imageWidth; coluna++)
+    {
+        var currentPixel = imageMatrix[linha][coluna];
+
+        // Insere o elemento se ele nao existe no array
+        if(!(currentPixel.r.toString() in numOccurrency))
+        {
+            numOccurrency[currentPixel.r.toString()] = 1
+        }
+        else
+        {
+            numOccurrency[currentPixel.r.toString()] += 1
+        }
+
+        // Insere o elemento se ele nao existe no array
+        if(!(currentPixel.g.toString() in numOccurrency))
+        {
+            numOccurrency[currentPixel.g.toString()] = 1
+        }
+        else
+        {
+            numOccurrency[currentPixel.g.toString()] += 1
+        }
+
+        // Insere o elemento se ele nao existe no array
+        if(!(currentPixel.b.toString() in numOccurrency))
+        {
+            numOccurrency[currentPixel.b.toString()] = 1
+        }
+        else
+        {
+            numOccurrency[currentPixel.b.toString()] += 1
+        }
+
+    }
+  }
+  console.log(numOccurrency);
+  return numOccurrency;
 }
