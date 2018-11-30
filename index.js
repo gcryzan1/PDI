@@ -2300,6 +2300,13 @@ function applyWavelet(){
 	console.log(haarHeight);
 	rounding();
 	countingIntensity();
+	var huffmanTree = applyHuffmanCoding();
+	var imgBitSequence = generateBitsForFile(huffmanTree);
+	var bitTable =  generateBitsForHuffmanTree(huffmanTree);
+
+	bitTable += imgBitSequence;
+
+	console.log(bitTable);
 }
 
 function haarInverse(){
@@ -2408,43 +2415,252 @@ function countingIntensity (){
     var numOccurrency = [];
 
     for(var linha = 0; linha < imageHeight; linha++)
-  {
-    for(var coluna = 0; coluna < imageWidth; coluna++)
-    {
-        var currentPixel = imageMatrix[linha][coluna];
+  	{
+	    for(var coluna = 0; coluna < imageWidth; coluna++)
+	    {
+	        var currentPixel = imageMatrix[linha][coluna];
 
-        // Insere o elemento se ele nao existe no array
-        if(!(currentPixel.r.toString() in numOccurrency))
-        {
-            numOccurrency[currentPixel.r.toString()] = 1
-        }
-        else
-        {
-            numOccurrency[currentPixel.r.toString()] += 1
-        }
+	        // Insere o elemento se ele nao existe no array
+	        if(!(currentPixel.r.toString() in numOccurrency))
+	        {
+	            numOccurrency[currentPixel.r.toString()] = 1
+	        }
+	        else
+	        {
+	            numOccurrency[currentPixel.r.toString()] += 1
+	        }
 
-        // Insere o elemento se ele nao existe no array
-        if(!(currentPixel.g.toString() in numOccurrency))
-        {
-            numOccurrency[currentPixel.g.toString()] = 1
-        }
-        else
-        {
-            numOccurrency[currentPixel.g.toString()] += 1
-        }
+	        // Insere o elemento se ele nao existe no array
+	        if(!(currentPixel.g.toString() in numOccurrency))
+	        {
+	            numOccurrency[currentPixel.g.toString()] = 1
+	        }
+	        else
+	        {
+	            numOccurrency[currentPixel.g.toString()] += 1
+	        }
 
-        // Insere o elemento se ele nao existe no array
-        if(!(currentPixel.b.toString() in numOccurrency))
-        {
-            numOccurrency[currentPixel.b.toString()] = 1
-        }
-        else
-        {
-            numOccurrency[currentPixel.b.toString()] += 1
-        }
+	        // Insere o elemento se ele nao existe no array
+	        if(!(currentPixel.b.toString() in numOccurrency))
+	        {
+	            numOccurrency[currentPixel.b.toString()] = 1
+	        }
+	        else
+	        {
+	            numOccurrency[currentPixel.b.toString()] += 1
+	        }
 
-    }
+	    }
   }
   console.log(numOccurrency);
   return numOccurrency;
+}
+
+function countPixelsHuffman() {
+
+	var numOccurrency = new Map();
+
+
+	for(var linha = 0; linha < imageHeight; linha++)
+  {
+    for(var coluna = 0; coluna < imageWidth; coluna++)
+    {
+    	var currentPixel = imageCanvas[linha][coluna];
+
+    	// Insere o elemento se ele nao existe no array
+    	if(!(numOccurrency.get(currentPixel.r)))
+    	{
+    		numOccurrency.set(currentPixel.r, 1);
+    	}
+    	else
+    	{
+    		var numTemp = numOccurrency.get(currentPixel.r);
+    		numOccurrency.set(currentPixel.r, numTemp + 1);
+    	}
+
+    	if(!(numOccurrency.get(currentPixel.g)))
+    	{
+    		numOccurrency.set(currentPixel.g, 1);
+    	}
+    	else
+    	{
+    		var numTemp = numOccurrency.get(currentPixel.g);
+    		numOccurrency.set(currentPixel.g, numTemp + 1);
+    	}
+
+    	if(!(numOccurrency.get(currentPixel.b)))
+    	{
+    		numOccurrency.set(currentPixel.b, 1);
+    	}
+    	else
+    	{
+    		var numTemp = numOccurrency.get(currentPixel.b);
+    		numOccurrency.set(currentPixel.b, numTemp + 1);
+    	}
+
+    }
+  }
+
+  return numOccurrency;
+}
+
+function applyHuffmanCoding() {
+	
+	var numOccurrency = countPixelsHuffman();
+
+	var huffmanTree = [];
+
+	// Crio um array com as probabilidades que vao ser usados para construir a "arvore" do codigo de huffman
+	for(var [key, value] of numOccurrency)
+	{
+		var prob = value / (imageWidth * imageHeight * 3); //Como ta juntando rgb tem q multiplicar por 3
+		var tempNode = new HuffmanNode(prob);
+		tempNode.intensity = key;
+
+		huffmanTree.push(tempNode);
+	}
+
+	var seq = [];
+	var idCount = 0;
+	
+	// Percorre a arvore deixando apenas dois elementos no final
+	do {
+		// Ordena os elementos
+		huffmanTree.sort(function(a, b){ return b.prob - a.prob; });
+
+		var ultimo = huffmanTree[huffmanTree.length - 1];
+		var penultimo = huffmanTree[huffmanTree.length - 2];
+
+		var newProb = (ultimo.prob * 10 + penultimo.prob * 10) / 10;
+
+		var res = new HuffmanNode(newProb);
+		idCount++;
+		res.id = idCount;
+
+		huffmanTree.splice(-2, 2);
+		huffmanTree.push(res);
+
+		// Adiciona os elementos no array de sequencia para poder voltar o processo no final
+		seq.push(ultimo);
+		seq.push(penultimo);
+		seq.push(res);
+
+	} while(huffmanTree.length > 2);
+
+	// Ordena e inicializa os 2 valores que restaram
+	huffmanTree.sort(function(a, b){ return b.prob - a.prob; });
+	huffmanTree[huffmanTree.length - 2].code += "0";
+	huffmanTree[huffmanTree.length - 1].code += "1";
+	
+	// Vem reconstruindo a arvore setando os bits de cada probabilidade
+	while(seq.length > 0)
+	{
+		var res = seq[seq.length - 1];
+		var penultimo = seq[seq.length - 2];
+		var ultimo = seq[seq.length - 3];
+
+		var index = huffmanTree.findIndex(node => node.id === res.id);
+
+		var resAnt = huffmanTree[index];
+		huffmanTree.splice(index, 1);
+
+		penultimo.code = resAnt.code + "0";
+		ultimo.code = resAnt.code + "1";
+
+		huffmanTree.push(penultimo);
+		huffmanTree.push(ultimo);
+
+		seq.splice(-3, 3);
+		
+	}
+
+	return huffmanTree;
+}
+
+function generateBitsForFile(huffmanTree) {
+	
+	var huffmanCodes = new Map();
+
+	// Passa as informacoes da huffmanTree para um Map para facilitar a manipulacao
+	for(var i = 0; i < huffmanTree.length; i++)
+	{
+		var node = huffmanTree[i];
+		huffmanCodes.set(node.intensity, node.code);
+	}
+
+	var bitSequence = "";
+
+	// Transcreve a matriz da imagem em uma cadeia de bits
+	for(var linha = 0; linha < imageHeight; linha++)
+  {
+    for(var coluna = 0; coluna < imageWidth; coluna++)
+    {
+    	var currentPixel = imageCanvas[linha][coluna];
+      
+      bitSequence += huffmanCodes.get(currentPixel.r);
+      bitSequence += huffmanCodes.get(currentPixel.g);
+      bitSequence += huffmanCodes.get(currentPixel.b);
+      
+    }
+  }
+
+  return bitSequence;
+}
+
+function generateBitsForHuffmanTree(huffmanTree) {
+	var bitSequenceHuffman = ""; 
+
+    // Salva a quantidade de intensidades diferentes
+    var lengthTemp = huffmanTree.length.toString(2);
+
+    while(lengthTemp.length < 8)
+    {
+        lengthTemp = "0" + lengthTemp;
+    }
+
+    bitSequenceHuffman += lengthTemp;
+
+    for(var i = 0; i < huffmanTree.length; i++)
+    {
+        //Adiciono a intensidade com o bit de sinal
+        var intensityTemp = huffmanTree[i].intensity;
+
+        if(intensityTemp < 0)
+        {
+            bitSequenceHuffman += 1;
+            intensityTemp = intensityTemp * (-1);
+        }
+        else
+        {
+            bitSequenceHuffman += 0;
+        }
+
+        var intensityBits = intensityTemp.toString(2);
+
+        while(intensityBits.length < 8)
+        {
+            intensityBits = "0" + intensityBits;
+        }
+
+        bitSequenceHuffman += intensityBits;
+
+
+        // Adiciono o tamanho do codigo da intensidade
+        var sizeCode = huffmanTree[i].code.length.toString(2);
+
+        while(sizeCode.length < 8)
+        {
+            sizeCode = "0" + sizeCode;
+        }
+
+        bitSequenceHuffman += sizeCode;
+
+
+        // Adiciono o codigo da intensidade
+        bitSequenceHuffman += huffmanTree[i].code;
+
+    }
+
+    return bitSequenceHuffman;
+
 }
