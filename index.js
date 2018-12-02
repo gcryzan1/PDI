@@ -2217,59 +2217,56 @@ function applyWaveletFilterMatrix() {
   var currentInteration = 0;
 
  
-while(subImagesArrayAtual.length > 0 && currentInteration < maxInteration)
-  {
+	while(subImagesArrayAtual.length > 0 && currentInteration < maxInteration){
 
-    for(var i = 0; i < subImagesArrayAtual.length; i++)
-    {
-      var currentSubImage = subImagesArrayAtual[i];
-      var imageMatrixNew = energyHaar(imageMatrixPrevious, currentSubImage.imageWidthBegin, currentSubImage.imageWidthEnd, currentSubImage.imageHeightBegin, currentSubImage.imageHeightEnd);
+    	for(var i = 0; i < subImagesArrayAtual.length; i++){
+      		var currentSubImage = subImagesArrayAtual[i];
+      		var imageMatrixNew = energyHaar(imageMatrixPrevious, currentSubImage.imageWidthBegin, currentSubImage.imageWidthEnd, currentSubImage.imageHeightBegin, currentSubImage.imageHeightEnd);
     
-      // Verifica se a energia New é menor que a Previous
-      if(!energyIsBigger(imageMatrixPrevious, imageMatrixNew, currentSubImage.imageWidthBegin, currentSubImage.imageWidthEnd, currentSubImage.imageHeightBegin, currentSubImage.imageHeightEnd))
-      {
-        // Subimagem do 1º quadrante
-        subImagesArrayNovo.push(new Quadrant(
-          currentSubImage.imageWidthBegin, 
-          ((currentSubImage.imageWidthEnd - currentSubImage.imageWidthBegin + 1) / 2) - 1,
-          currentSubImage.imageHeightBegin,
-          ((currentSubImage.imageHeightEnd - currentSubImage.imageHeightBegin + 1) / 2) - 1
-        ));
+      		// Verifica se a energia New é menor que a Previous
+      		if(!energyIsBigger(imageMatrixPrevious, imageMatrixNew, currentSubImage.imageWidthBegin, currentSubImage.imageWidthEnd, currentSubImage.imageHeightBegin, currentSubImage.imageHeightEnd)){
+        		// Subimagem do 1º quadrante
+        		subImagesArrayNovo.push(new Quadrant(
+          		currentSubImage.imageWidthBegin, 
+          		((currentSubImage.imageWidthEnd - currentSubImage.imageWidthBegin + 1) / 2) - 1,
+          		currentSubImage.imageHeightBegin,
+          		((currentSubImage.imageHeightEnd - currentSubImage.imageHeightBegin + 1) / 2) - 1
+        		));
 
-        // Subimagem do 2º quadrante
-        subImagesArrayNovo.push(new Quadrant(
-          currentSubImage.imageWidthBegin, 
-          ((currentSubImage.imageWidthEnd - currentSubImage.imageWidthBegin + 1) / 2) - 1,
-          ((currentSubImage.imageHeightEnd - currentSubImage.imageHeightBegin + 1) / 2),
-          currentSubImage.imageHeightEnd
-        ));
+       			 // Subimagem do 2º quadrante
+        		subImagesArrayNovo.push(new Quadrant(
+          		currentSubImage.imageWidthBegin, 
+          		((currentSubImage.imageWidthEnd - currentSubImage.imageWidthBegin + 1) / 2) - 1,
+          		((currentSubImage.imageHeightEnd - currentSubImage.imageHeightBegin + 1) / 2),
+          		currentSubImage.imageHeightEnd
+       			));
 
-        // Subimagem do 3º quadrante
-        subImagesArrayNovo.push(new Quadrant(
-          ((currentSubImage.imageWidthEnd - currentSubImage.imageWidthBegin + 1) / 2), 
-          currentSubImage.imageWidthEnd,
-          ((currentSubImage.imageHeightEnd - currentSubImage.imageHeightBegin + 1) / 2),
-          currentSubImage.imageHeightEnd
-        ));
+        		// Subimagem do 3º quadrante
+        		subImagesArrayNovo.push(new Quadrant(
+          		((currentSubImage.imageWidthEnd - currentSubImage.imageWidthBegin + 1) / 2), 
+          		currentSubImage.imageWidthEnd,
+          		((currentSubImage.imageHeightEnd - currentSubImage.imageHeightBegin + 1) / 2),
+          		currentSubImage.imageHeightEnd
+        		));
 
-        // Subimagem do 4º quadrante
-        subImagesArrayNovo.push(new Quadrant(
-          ((currentSubImage.imageWidthEnd - currentSubImage.imageWidthBegin + 1) / 2), 
-          currentSubImage.imageWidthEnd,
-          currentSubImage.imageHeightBegin,
-          ((currentSubImage.imageHeightEnd - currentSubImage.imageHeightBegin + 1) / 2) - 1
-        ));
+        		// Subimagem do 4º quadrante
+        		subImagesArrayNovo.push(new Quadrant(
+          		((currentSubImage.imageWidthEnd - currentSubImage.imageWidthBegin + 1) / 2), 
+          		currentSubImage.imageWidthEnd,
+          		currentSubImage.imageHeightBegin,
+          		((currentSubImage.imageHeightEnd - currentSubImage.imageHeightBegin + 1) / 2) - 1
+        		));
 
-        var imageMatrixPrevious = JSON.parse(JSON.stringify(imageMatrixNew));
-      }
+        		var imageMatrixPrevious = JSON.parse(JSON.stringify(imageMatrixNew));
+      		}
 
-    }
+    	}
 
-    subImagesArrayAtual = JSON.parse(JSON.stringify(subImagesArrayNovo));
+   	subImagesArrayAtual = JSON.parse(JSON.stringify(subImagesArrayNovo));
     subImagesArrayNovo = [];
 
     currentInteration++;
-  }
+  	}
 
   var imageMatrixNew = JSON.parse(JSON.stringify(imageMatrixPrevious));
 
@@ -2283,7 +2280,6 @@ while(subImagesArrayAtual.length > 0 && currentInteration < maxInteration)
 	};
 	var data = [trace];
 	Plotly.newPlot('histograma', data);
-
 }
 
 function applyWavelet(){
@@ -2662,5 +2658,177 @@ function generateBitsForHuffmanTree(huffmanTree) {
     }
 
     return bitSequenceHuffman;
+}
 
+function erosion(){
+
+	var x = [];
+
+	var imageMatrix = JSON.parse(JSON.stringify(originalImageMatrix));
+
+	var size = document.getElementById("tamanho").value;
+
+	if (size % 2 == 0){
+		size += 1;
+	}
+
+	var dist = (size - 1) / 2;
+
+	for (var linha = 0; linha < imageHeight; linha++){
+		for (var coluna = 0; coluna < imageWidth; coluna++){
+			
+			var listaR = [];
+			var listaG = [];
+			var listaB = [];
+
+			for (var i = 0; i < size; i++){
+				for (var j = 0; j < size; j++){
+					
+					var indexLinha = linha - dist + i;
+					var indexColuna = coluna - dist + j;
+
+					if (indexLinha >= 0 && indexLinha < imageHeight && indexColuna >= 0 && indexColuna < imageWidth){
+						var pixel = originalImageMatrix[indexLinha][indexColuna];
+
+						listaR.push(pixel.r);
+						listaG.push(pixel.g);
+						listaB.push(pixel.b);
+
+					}
+				}
+			}
+
+			var minR = listaR.reduce(function(a, b) {
+  				return Math.min(a, b);
+			});
+			var minG = listaG.reduce(function(a, b) {
+  				return Math.min(a, b);
+			});
+			var minB = listaB.reduce(function(a, b) {
+  				return Math.min(a, b);
+			});
+
+			var pixel = imageMatrix[linha][coluna];
+			pixel.r = minR;
+			pixel.g = minG;
+			pixel.b = minB;
+
+			x.push(pixel.r);
+		}
+	}
+
+	var trace = {
+		x: x,
+		type: 'histogram',
+	};
+	var data = [trace];
+	Plotly.newPlot('histograma', data);
+
+	var erosionImage = matrixToImage(imageMatrix, imageWidth, imageHeight);
+	ctx.putImageData(erosionImage, 0, 0);
+
+	return imageMatrix;
+}
+
+function dilation(){
+
+	var x = [];
+
+	var imageMatrix = JSON.parse(JSON.stringify(originalImageMatrix));
+
+	var size = document.getElementById("tamanho").value;
+
+	if (size % 2 == 0){
+		size += 1;
+	}
+
+	var dist = (size - 1) / 2;
+
+	for (var linha = 0; linha < imageHeight; linha++){
+		for (var coluna = 0; coluna < imageWidth; coluna++){
+			
+			var listaR = [];
+			var listaG = [];
+			var listaB = [];
+
+			for (var i = 0; i < size; i++){
+				for (var j = 0; j < size; j++){
+					
+					var indexLinha = linha - dist + i;
+					var indexColuna = coluna - dist + j;
+
+					if (indexLinha >= 0 && indexLinha < imageHeight && indexColuna >= 0 && indexColuna < imageWidth){
+						var pixel = originalImageMatrix[indexLinha][indexColuna];
+
+						listaR.push(pixel.r);
+						listaG.push(pixel.g);
+						listaB.push(pixel.b);
+
+					}
+				}
+			}
+
+			var maxR = listaR.reduce(function(a, b) {
+  				return Math.max(a, b);
+			});
+			var maxG = listaG.reduce(function(a, b) {
+  				return Math.max(a, b);
+			});
+			var maxB = listaB.reduce(function(a, b) {
+  				return Math.max(a, b);
+			});
+
+			var pixel = imageMatrix[linha][coluna];
+			pixel.r = maxR;
+			pixel.g = maxG;
+			pixel.b = maxB;
+
+			x.push(pixel.r);
+		}
+	}
+
+	var trace = {
+		x: x,
+		type: 'histogram',
+	};
+	var data = [trace];
+	Plotly.newPlot('histograma', data);
+
+	var dilationImage = matrixToImage(imageMatrix, imageWidth, imageHeight);
+	ctx.putImageData(dilationImage, 0, 0);
+
+	return imageMatrix;
+}
+
+function gradienteMorfologico(){
+	var x = [];
+
+	var erosao = erosion();
+	var dilatacao = dilation();
+
+	var imageMatrix = JSON.parse(JSON.stringify(originalImageMatrix));
+
+	for (var linha = 0; linha < imageHeight; linha++){
+		for (var coluna = 0; coluna < imageWidth; coluna++){
+			var pixel = imageMatrix[linha][coluna];
+			var pixel1 = erosao[linha][coluna];
+			var pixel2 = dilatacao[linha][coluna];
+
+			pixel.r = pixel2.r - pixel1.r;
+			pixel.g = pixel2.g - pixel1.g;
+			pixel.b = pixel2.b - pixel1.b;
+
+			x.push(pixel.r);
+		}
+	}
+
+	var trace = {
+		x: x,
+		type: 'histogram',
+	};
+	var data = [trace];
+	Plotly.newPlot('histograma', data);
+
+	var gradienteImage = matrixToImage(imageMatrix, imageWidth, imageHeight);
+	ctx.putImageData(gradienteImage, 0, 0);
 }
