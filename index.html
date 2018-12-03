@@ -31,7 +31,7 @@
 				<center><h2>Processamento de Imagens</h2></center><br><br>
 				
 				<center><div class="col-xs-12">
-				
+
 				<div class="col-lg-12">
 
 					<div class="col-lg-6">
@@ -131,6 +131,11 @@
 					<option value="filtroDilatacao">Dilatação</option>
 					<option value="filtroGradiente">Gradiente Morfológico</option>
 				</select><br><br></center>
+
+				<input class="button" type="button" value="Erosão" onclick="erosion()" />
+				<input class="button" type="button" value="Dilatação" onclick="dilation()" />
+				<input class="button" type="button" value="Gradiente Morfológico" onclick="gradienteMorfologico()" />
+				<center><input class="input2" type="number" value="3" id="tamanho"></center><br>
 
 				
 				<div class="container" id="negativo" style="display: none;">
