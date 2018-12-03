@@ -28,7 +28,7 @@
 			
 			<div class="row">
 				
-				<center><h2>Trabalho de Processamento de Imagens</h2></center><br><br>
+				<center><h2>Processamento de Imagens</h2></center><br><br>
 				
 				<center><div class="col-xs-12">
 				
@@ -127,6 +127,9 @@
 					<option value="filtroSub">Subtrair Imagens</option>
 					<option value="TransformadaHaar">Transformada de Haar normal</option>
 					<option value="TransformadaHaarEnergy">Transformada de Haar energia</option>
+					<option value="filtroErosao">Erosão</option>
+					<option value="filtroDilatacao">Dilatação</option>
+					<option value="filtroGradiente">Gradiente Morfológico</option>
 				</select><br><br></center>
 
 				
@@ -457,6 +460,29 @@
 
 				</div>
 
+				
+				<div class="container" id="erosao" style="display: none;">
+					
+					<center><input class="input2" type="number" value="3" id="tamanho"></center><br>
+					<input class="button" type="button" value="Erosão" onclick="erosion()" /><br><br>
+				
+				</div>
+
+				<div class="container" id="dilatacao" style="display: none;">
+					
+					<center><input class="input2" type="number" value="3" id="tamanho"></center><br>
+					<input class="button" type="button" value="Dilatação" onclick="dilation()" /><br><br>
+				
+				</div>
+
+				<div class="container" id="gradiente" style="display: none;">
+					
+					<center><input class="input2" type="number" value="3" id="tamanho"></center><br>
+					<input class="button" type="button" value="Gradiente Morfológico" onclick="gradienteMorfologico()" /><br><br>	
+				
+				</div>
+
+
 				<h3>Histograma</h3>
 				
 				<div id="histograma"></div><br><br><br>
@@ -556,7 +582,7 @@
 
 				<script type="text/javascript">
 					
-					var arrayId = ["negativo","equalizarImagem","logaritmo","binario","limiarizacao","linear","potencia","convolucao","media","mediana","mediaPonderada","mediaGeometrica","mediaHarmonica","maximo","minimo","pontoMedio","mediaContraHarmonica","frequencia","default", "chroma", "sepia","subtrair","Haar","HaarEnergy"];
+					var arrayId = ["negativo","equalizarImagem","logaritmo","binario","limiarizacao","linear","potencia","convolucao","media","mediana","mediaPonderada","mediaGeometrica","mediaHarmonica","maximo","minimo","pontoMedio","mediaContraHarmonica","frequencia","default", "chroma", "sepia","subtrair","Haar","HaarEnergy","erosao","dilatacao","gradiente"];
 
 					var arrayId2 = ["resultadoNormal","resultadoBrilho"];
 
@@ -632,6 +658,12 @@
 							mostrarDivParametro("Haar");
 						}else if (value == "TransformadaHaarEnergy") {
 							mostrarDivParametro("HaarEnergy");
+						}else if (value = "filtroErosao") {
+							mostrarDivParametro("erosao");
+						}else if (value == "filtroDilatacao") {
+							mostrarDivParametro("dilatacao");
+						}else if (value == "filtroGradiente") {
+							mostrarDivParametro("gradiente");
 						}
 					}
 
