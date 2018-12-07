@@ -2832,3 +2832,181 @@ function gradienteMorfologico(){
 	var gradienteImage = matrixToImage(imageMatrix, imageWidth, imageHeight);
 	ctx.putImageData(gradienteImage, 0, 0);
 }
+
+function icfft(amplitudes){
+	var N = amplitudes.length;
+	var iN = 1 / N;
+ 
+	//conjugate if imaginary part is not 0
+	for(var i = 0 ; i < N; ++i)
+		if(amplitudes[i] instanceof Complex)
+			amplitudes[i].im = -amplitudes[i].im;
+ 
+	//apply fourier transform
+	amplitudes = cfft(amplitudes)
+ 
+	for(var i = 0 ; i < N; ++i){
+		//conjugate again
+		amplitudes[i].im = -amplitudes[i].im;
+		//scale
+		amplitudes[i].re *= iN;
+		amplitudes[i].im *= iN;
+	}
+	return amplitudes;
+}
+ 
+function cfft(amplitudes){
+
+	var N = amplitudes.length;
+	if( N <= 1 )
+		return amplitudes;
+ 
+	var hN = N / 2;
+	var even = [];
+	var odd = [];
+	even.length = hN;
+	odd.length = hN;
+	for(var i = 0; i < hN; ++i){
+		even[i] = amplitudes[i*2];
+		odd[i] = amplitudes[i*2+1];
+	}
+	even = cfft(even);
+	odd = cfft(odd);
+ 
+	var a = -2*Math.PI;
+	for(var k = 0; k < hN; ++k){
+		if(!(even[k] instanceof Complex))
+			even[k] = new Complex(even[k], 0);
+		if(!(odd[k] instanceof Complex))
+			odd[k] = new Complex(odd[k], 0);
+		var p = k/N;
+		var t = new Complex(0, a * p);
+		t.cexp(t).mul(odd[k], t);
+		amplitudes[k] = even[k].add(t, odd[k]);
+		amplitudes[k + hN] = even[k].sub(t, even[k]);
+	}
+	return amplitudes;
+}
+
+function bidimensionFFT() {
+
+	var imageMatrix = JSON.parse(JSON.stringify(originalImageMatrix));
+	
+
+	// Cria uma matriz com apenas valores numericos invez de pixels	
+	matrizNum = [];
+	
+	for(var coluna = 0; coluna < imageWidth; coluna++){
+		var colunaTemp = [];
+
+		for(var linha = 0; linha < imageHeight; linha++){
+			colunaTemp.push(imageMatrix[linha][coluna].r);
+		}
+
+		matrizNum.push(colunaTemp);
+	}
+	
+
+	// Aplica o fft em uma linha por vez da matriz
+	for(var i = 0; i < imageHeight; i++){
+		matrizNum[i] = cfft(matrizNum[i]);
+	}
+	
+	
+	// Faz a transposta da matriz
+	matrizNum = transposeArray(matrizNum, imageWidth);
+	
+	// Aplica o fft em uma linha por vez da matriz transposta
+	for(var i = 0; i < imageHeight; i++){
+		matrizNum[i] = cfft(matrizNum[i]);
+	}
+
+	//matrizNum = calculaInversa(matrizNum);
+
+	
+	// Transpoe de novo para voltar ao normal
+	matrizNum = transposeArray(matrizNum, imageWidth);
+
+
+	//Poe os pixels do array dentro de uma matriz equivalente a imagem
+  var imageMatrix = [];
+  i = 0;
+  for(var linha = 0; linha < imageHeight; linha++){
+    var lineTemp = [];
+    for(var coluna = 0; coluna < imageWidth; coluna++){
+    	var temp = matrizNum[linha][coluna];
+    	var mag = Math.sqrt( (temp.re*temp.re) + (temp.im*temp.im) );
+    	var phase = Math.atan(temp.im/temp.re);
+
+      lineTemp.push(new Pixel(temp.re, temp.re, temp.re, 255));
+      i++;
+    }
+
+    //Insere a linha de pixels na matriz
+    imageMatrix.push(lineTemp);
+  }
+
+  // Plota a imagem na tela
+  currentMatrix = imageMatrix;
+
+  var newImgData = matrixToImage(imageMatrix, imageWidth, imageHeight);
+
+  ctx.putImageData(newImgData, 0, 0);
+
+	//console.log(imageMatrix);
+
+}
+
+function transposeArray(array, arrayLength){
+    var newArray = [];
+    for(var i = 0; i < array.length; i++){
+        newArray.push([]);
+    };
+
+    for(var i = 0; i < array.length; i++){
+        for(var j = 0; j < arrayLength; j++){
+            newArray[j].push(array[i][j]);
+        };
+    };
+
+    return newArray;
+}
+
+function calculaInversa(matrizNum) {
+
+	//matrizNum = transposeArray(matrizNum, imageWidth);
+	/*
+	var imageMatrix = JSON.parse(JSON.stringify(originalImageMatrix));
+	
+
+	// Cria uma matriz com apenas valores numericos invez de pixels	
+	matrizNum = [];
+	
+	for(var coluna = 0; coluna < imageWidth; coluna++){
+		var colunaTemp = [];
+
+		for(var linha = 0; linha < imageHeight; linha++){
+			colunaTemp.push(imageMatrix[linha][coluna].r);
+		}
+
+		matrizNum.push(colunaTemp);
+	}
+	
+	*/
+
+	// Aplica o fft em uma linha por vez da matriz
+	for(var i = 0; i < imageHeight; i++){
+		matrizNum[i] = icfft(matrizNum[i]);
+	}
+
+	// Transpoe de novo para voltar ao normal
+	matrizNum = transposeArray(matrizNum, imageWidth);
+
+	// Aplica o fft em uma linha por vez da matriz
+	for(var i = 0; i < imageHeight; i++){
+		matrizNum[i] = icfft(matrizNum[i]);
+	}
+
+
+	return matrizNum;
+}
